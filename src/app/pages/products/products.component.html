@@ -1,1 +1,14 @@
-<p>products works!</p>
+<div>
+  <p>products works!</p>
+  <div *ngFor="let product of products">
+    <h2>{{ product.make }}</h2>
+    <p>{{ product.model }}</p>
+    <p>{{ product.description }}</p>
+    <p>{{ product.price }}</p>
+    <p>{{ product.stockAmount }}</p>
+    <p>{{ product.OS }}</p>
+    <p>{{ product.disadvantage }}</p>
+    <p>{{ product.screenSize }}</p>
+    <p>{{ product.stockCode }}</p>
+  </div>
+</div>

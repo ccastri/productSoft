@@ -4,7 +4,7 @@ export class Product {
     public model: string,
     public description: string,
     public price: string,
-    public strockAmount: number,
+    public stockAmount: number,
     public OS: string,
     public disadvantage: string,
     public screenSize: string,

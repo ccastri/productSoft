@@ -23,7 +23,7 @@ import { MaterialModule } from '../material.module';
     PagesComponent,
     CartComponent,
   ],
-  exports: [DashboardComponent, PagesComponent],
+  exports: [DashboardComponent, ProductsComponent, PagesComponent],
   imports: [
     CommonModule,
     BrowserAnimationsModule,
