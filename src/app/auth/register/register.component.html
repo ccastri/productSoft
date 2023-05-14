@@ -1,5 +1,72 @@
-<div class="flex flex-col w-full border-2 border-black p-4 mx-2">
-  <h2>khe pasa</h2>
-  <input placeholder="Email" type="text" />
-  <input placeholder="Password" type="text" />
+<div class="flex flex-col h-full w-full border-2 border-black p-4 mx-2">
+  <!-- <app-sidebar></app-sidebar> -->
+  <div
+    class="border-2 w-full items-center justify-center flex flex-col border-slate-300 h-screen"
+  >
+    <h2>Geek's Product</h2>
+    <span>Register</span>
+    <form
+      className=" flex flex-row w-72 items-center justify-center sm:w-full max-w-lg mx-auto   h-screen"
+      id="registerform"
+      autocomplete="off"
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+    >
+      <input
+        placeholder="Name"
+        class="w-full border-solid my-16 flex border-b border-black text-gray-700 py-3 px-4 leading-tight focus:outline-none bg-slate-200 hover:bg-white font-normal"
+        type="text"
+        formControlName="name"
+      />
+      <input
+        placeholder="Email"
+        class="w-full border-solid my-16 flex border-b border-black text-gray-700 py-3 px-4 leading-tight focus:outline-none bg-slate-200 hover:bg-white font-normal"
+        type="text"
+        formControlName="email"
+      />
+      <input
+        placeholder="Password"
+        class="w-full border-solid my-16 flex border-b border-black text-gray-700 py-3 px-4 leading-tight focus:outline-none bg-slate-200 hover:bg-white font-normal"
+        type="text"
+        formControlName="password"
+      />
+      <input
+        placeholder="Confirm password"
+        class="w-full border-solid my-12 flex border-b border-black text-gray-700 py-3 px-4 leading-tight focus:outline-none bg-slate-200 hover:bg-white font-normal"
+        type="text"
+        formControlName="password2"
+      />
+      <div class="flex">
+        <input
+          class="form-checkbox h-5 w-5 text-blue-600"
+          type="checkbox"
+          id="termsOfService"
+          name="termsOfService"
+          formControlName="terms"
+        />
+        <label for="termsOfService" class="ml-2 block text-sm text-gray-900">
+          Accept the terms of service
+        </label>
+      </div>
+      <div class="row">
+        <div class="col text-danger">
+          <p *ngIf="notValidField('name')">*name is required</p>
+          <p *ngIf="notValidField('email')">
+            *email is required and must be valid
+          </p>
+          <p *ngIf="notValidPassword()">*Passwords must have the same values</p>
+          <!-- <p *ngIf="!registerForm.get('terms').value">Please accept terms</p> -->
+          <p *ngIf="acceptTerms()">*Please accept terms</p>
+        </div>
+      </div>
+      <div class="flex w-full justify-center items-center">
+        <button
+          class="w-24 p-3 bg-slate-500 justify-center flex my-8"
+          type="submit"
+        >
+          Sign Up
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

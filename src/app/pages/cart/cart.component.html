@@ -1,0 +1,171 @@
+<div class="flex w-full flex-col h-full border-2 border-green-300 p-4">
+  <div class="border-2 flex flex-row w-full border-blue-500 space-x-2" pt-2>
+    <p class="border-2 border-blue-200 w-20">Factura No.</p>
+    <p class="bg-slate-300 rounded-md w-12 text-center h-6">AI</p>
+    <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p>
+  </div>
+  <div
+    class="border-2 flex h-20 justify-center items-center w-full border-red-300"
+  >
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Choose a date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div
+    class="py-2 border-2 flex flex-row w-full border-blue-500 space-x-2"
+    pt-2
+  >
+    <p class="border-2 border-blue-200 w-20">Cliente</p>
+    <select
+      type="select"
+      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+    >
+      <option>SAN NICOLAS LOCAL 45</option>
+      <option>SAN ANDRESITO LOCAL 4305</option>
+      <option>LA PASARELA LOCAL 200</option>
+    </select>
+    <!-- <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p> -->
+  </div>
+  <div
+    class="border-2 items-center flex flex-row w-full border-blue-500 space-x-2"
+    pt-2
+  >
+    <p class="border-2 border-blue-200 w-20">Origen Factura</p>
+    <select
+      type="select"
+      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+    >
+      <option>DIRECTA</option>
+      <option>INDIRECTA</option>
+    </select>
+    <input
+      text="text"
+      class="border-2 rounded-md text-center h-8 w-28"
+      placeholder=""
+    />
+  </div>
+  <div
+    class="border-2 py-2 flex flex-row w-full border-blue-500 space-x-2"
+    pt-2
+  >
+    <p class="border-2 border-blue-200 w-20">Vendedor</p>
+    <select
+      type="select"
+      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+    >
+      <option>CAMILO CASTRILLON</option>
+      <option>DANIELA GARCIA</option>
+      <option>ALEJANDRA DIAZ</option>
+    </select>
+  </div>
+  <div
+    class="border-2 flex h-20 justify-center items-center w-full border-red-300"
+  >
+    <p class="mr-4">Moneda</p>
+    <select
+      type="select"
+      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+    >
+      <option>PESO</option>
+      <option>DOLAR</option>
+      <option>EURO</option>
+    </select>
+  </div>
+  <div
+    class="border-2 items-center flex flex-row w-full border-blue-500 space-x-2"
+    pt-2
+  >
+    <p class="border-2 border-blue-200 w-20">Tasa de Cambio</p>
+    <input
+      text="text"
+      class="border-2 w-full rounded-md text-center h-8"
+      placeholder="4.7%"
+    />
+  </div>
+  <div
+    class="py-2 border-2 flex flex-row w-full border-blue-500 space-x-2"
+    pt-2
+  >
+    <p class="border-2 border-blue-200 w-20">Documento Ref.</p>
+    <select
+      type="select"
+      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+    >
+      <option>DOCUMENTO A</option>
+      <option>DOCUMENTO B</option>
+      <option>DOCUMENTO C</option>
+    </select>
+    <!-- <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p> -->
+  </div>
+  <div
+    class="border-2 py-2 flex space-y-2 flex-col w-full border-blue-500"
+    pt-2
+  >
+    <div class="flex space-x-4 items-end">
+      <p class="border-2 border-blue-200 w-20">Forma de pago</p>
+      <select
+        type="select"
+        class="border-2 flex items-center justify-center rounded-md text-center w-full h-8"
+      >
+        <option>Credito</option>
+        <option>Debito</option>
+        <option>Efectivo</option>
+        <option>Cheque</option>
+      </select>
+    </div>
+    <div class="flex space-x-4">
+      <p class="border-2 border-blue-200 w-20">Plazo</p>
+      <input
+        type="text"
+        class="w-full border-2 text-right pr-4"
+        placeholder="0"
+      />
+    </div>
+  </div>
+  <table class="w-full flex flex-row border-2 border-slate-400">
+    <thead
+      class="flex flex-col border-2 border-slate-600 items-justify text-white"
+    >
+      <tr class="flex flex-col space-y-4">
+        <th class="border-y-2 bg-gray-500">Cod</th>
+        <th class="border-y-2 bg-gray-500">Nombre</th>
+        <th class="border-y-2 bg-gray-500">Valor unitario</th>
+        <th class="border-y-2 bg-gray-500">Cantidad</th>
+        <th class="border-y-2 bg-gray-500">Valor total</th>
+      </tr>
+    </thead>
+    <tbody class="flex flex-row text-center">
+      <tr
+        class="border-x text-white bg-blue-500 flex flex-col text-center w-full border-black justify-between"
+      >
+        <td class="border-y-2 bg-gray-500">001</td>
+        <td class="border-y-2 bg-gray-500">Mac Chip M1</td>
+        <td class="border-y-2 bg-gray-500">4700000</td>
+        <td class="border-y-2 bg-gray-500">1</td>
+        <td class="border-y-2 bg-gray-500">4700000</td>
+      </tr>
+      <tr class="flex w-full flex-col justify-between bg-blue-500 text-white">
+        <td class="border-y-2 bg-gray-500">066</td>
+        <td class="border-y-2 bg-gray-500">Allienware Ryzen</td>
+        <td class="border-y-2 bg-gray-500">4.0M</td>
+        <td class="border-y-2 bg-gray-500">5</td>
+        <td class="border-y-2 bg-gray-500">20M</td>
+      </tr>
+      <!-- <tr *ngFor="let item of items">
+          <td>{{ item.codigo }}</td>
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.valorUnitario }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>{{ item.valorTotal }}</td>
+        </tr> -->
+    </tbody>
+  </table>
+  <div
+    class="flex border-2 items-center space-x-2 justify-center border-black flex-row"
+  >
+    <mat-icon fontSize="large" color="primary">edit</mat-icon>
+    <mat-icon fontSize="large" color="primary">delete</mat-icon>
+  </div>
+</div>

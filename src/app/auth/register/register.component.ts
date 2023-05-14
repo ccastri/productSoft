@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 // import { UserService } from '../../services/user-service.service';
 
@@ -19,7 +20,7 @@ export class RegisterComponent {
       email: ['elcastri1@hotmail.com', [Validators.required, Validators.email]],
       password: ['elcastri', Validators.required],
       password2: ['elcastri', Validators.required],
-      terms: [true, Validators.required],
+      terms: [false, Validators.required],
     },
     {
       validators: this.matchingPasswords('password', 'password2'),
@@ -28,27 +29,29 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    // private userService: UserService,
+    private userService: UserService,
     private router: Router
   ) {}
 
-  createUser() {
-    this.formSubmitted = true; //Confirmo el envio del formulario
-    // console.log(this.registerForm.value)
+  async register() {
+    this.formSubmitted = true;
     console.log(this.registerForm);
+    const { name, email, password } = this.registerForm.value;
+    try {
+      const userCredential = this.userService.register(email, password, name);
+      console.log(userCredential);
+      // if (this.registerForm.invalid) {
+      //   return;
+      // }
 
-    if (this.registerForm.invalid) {
-      return;
+      // Posting sign up body values
+      this.userService.register(email, password, name);
+      Swal.fire('Completado', `Usuario ${name} Autenticado`, 'success');
+      this.router.navigateByUrl('/');
+    } catch (err: any) {
+      // console.error(err);
+      Swal.fire('Error', err.error.msg, 'error');
     }
-    // Posting sign up body values
-    // this.userService.createUser(this.registerForm.value).subscribe({
-    //   next: (resp: any) => {
-    //     this.router.navigateByUrl('/');
-    //   },
-    //   error: (err: any) => {
-    //     Swal.fire('Error', err.error.msg, 'error');
-    //   },
-    // });
   }
 
   notValidField(field: string): boolean {

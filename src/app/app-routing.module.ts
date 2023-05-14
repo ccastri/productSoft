@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 // import { PagesRoutingModule } from './pages/pages.routing';
 import { AuthRoutingModule } from './auth/auth.routing';
 import { NotfoundComponent } from './not-found/not-found.component';
+import { PagesRoutingModule } from './pages/pages.routing';
 
 // import { NotfoundComponent } from './notfound/notfound.component';
 
@@ -22,7 +23,7 @@ const routes: Routes = [
   declarations: [],
   imports: [
     RouterModule.forRoot(routes), //Solo rutas principales. forchild rutas hijas
-    // PagesRoutingModule,
+    PagesRoutingModule,
     AuthRoutingModule,
   ],
   exports: [RouterModule],

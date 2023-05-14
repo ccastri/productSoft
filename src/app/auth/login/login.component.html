@@ -1,4 +1,36 @@
-<div>
-  <input placeholder="Email" type="text" />
-  <input placeholder="Password" type="text" />
+<div class="flex flex-col h-full w-full border-2 border-black p-4 mx-2">
+  <!-- <app-sidebar></app-sidebar> -->
+  <div
+    class="border-2 w-full items-center justify-center flex flex-col border-slate-300 h-screen"
+  >
+    <h2>Geek's Product</h2>
+    <span>Login</span>
+    <form
+      className=" flex flex-row w-72 items-center justify-center sm:w-full max-w-lg mx-auto   h-screen"
+      autocomplete="off"
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+    >
+      <input
+        placeholder="Email"
+        class="w-full border-solid my-16 flex border-b border-black text-gray-700 py-3 px-4 leading-tight focus:outline-none bg-slate-200 hover:bg-white font-normal"
+        type="email"
+        formControlName="email"
+      />
+      <input
+        placeholder="Password"
+        class="w-full border-solid my-16 flex border-b border-black text-gray-700 py-3 px-4 leading-tight focus:outline-none bg-slate-200 hover:bg-white font-normal"
+        type="password"
+        formControlName="password"
+      />
+      <div class="flex w-full justify-center items-center">
+        <button
+          class="w-24 p-3 bg-slate-500 justify-center flex my-8"
+          type="submit"
+        >
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

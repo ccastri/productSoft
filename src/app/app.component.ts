@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { Home } from '@material-ui/icons';
-
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'laptops-inventory';
+  isAuth = false;
+  title = 'laptops inventory';
+
+  constructor(private userService: UserService) {
+    this.userService.isAuth.subscribe((value) => {
+      this.isAuth = value;
+    });
+  }
 }
