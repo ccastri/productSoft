@@ -19,18 +19,31 @@ export class ProductService {
   constructor(private db: AngularFirestore) {
     {
       this.productsCollection = this.db.collection<Product>('productos');
-
-      // this.products$ = this.productsCollection.snapshotChanges().pipe(
-      //   map((actions) =>
-      //     actions.map((a) => {
-      //       const data = a.payload.doc.data() as Product;
-      //       const id = a.payload.doc.id;
-      //       return { id, ...data };
-      //     })
-      //   )
-      // );
     }
   }
+  //! async/await para obtener coleccion entera de productos
+  // async fetchProducts(): Promise<Product[]> {
+  //   try {
+  //     const productsSnapshot = await this.productsCollection
+  //       .snapshotChanges()
+  //       .pipe(
+  //         tap(console.log),
+  //         map((changes) =>
+  //           changes.map((c: any) => ({
+  //             id: c.payload.doc.id,
+  //             ...c.payload.doc.data(),
+  //           }))
+  //         )
+  //       )
+  //       .toPromise();
+
+  //     return productsSnapshot;
+  //   } catch (error) {
+  //     console.error('Error fetching products:', error);
+  //     throw error;
+  //   }
+  // }
+  // ! getProducts without async/await
   getProducts(): Observable<Product[]> {
     return this.productsCollection.snapshotChanges().pipe(
       tap(console.log),
@@ -42,6 +55,7 @@ export class ProductService {
       )
     );
   }
+  // !async/await add product
   async addProduct(product: Product): Promise<any> {
     try {
       await this.productsCollection.add(product);
@@ -51,9 +65,8 @@ export class ProductService {
       Swal.fire('Error', 'Failed to add product', 'error');
     }
   }
-
+  // ! async/await actualizar producto
   async updateProduct(product: Product): Promise<void> {
-    // !Añadir try catch con sweet alert
     const productRef = this.productsCollection.doc(product.id).ref;
     return await productRef.update(product);
   }
@@ -64,7 +77,7 @@ export class ProductService {
     await productRef.delete();
     console.log('Product removed:', id);
   }
-
+  // ! async await para añadir stock
   async addStockAmount(id: string, amount: number): Promise<void> {
     try {
       const productRef = this.db.collection<Product>('productos').doc(id).ref;
@@ -77,7 +90,7 @@ export class ProductService {
       throw err;
     }
   }
-  // !Disminuir stock
+  //! async/await para disminuir stock
   async decreaseStockAmount(id: string, amount: number): Promise<void> {
     try {
       const productRef = this.db.collection<Product>('productos').doc(id).ref;
@@ -99,6 +112,7 @@ export class ProductService {
       console.error('Error decreasing stock amount:', error);
     }
   }
+  // !async await para obtener producto por ID
   getProductById(id: string): Observable<Product | undefined> {
     try {
       const productDoc = this.db.doc<Product>(`products/${id}`);

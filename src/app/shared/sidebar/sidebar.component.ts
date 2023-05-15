@@ -23,6 +23,28 @@ export class SidebarComponent implements OnInit {
     // this.user = userService.user;
   }
   ngOnInit(): void {}
+  //! async await para cierre de sesion
+  // async logout() {
+  //   try {
+  //     const result = await Swal.fire({
+  //       title: '¿Está seguro que desea cerrar sesión?',
+  //       icon: 'warning',
+  //       showCancelButton: true,
+  //       confirmButtonColor: '#3085d6',
+  //       cancelButtonColor: '#d33',
+  //       confirmButtonText: 'Sí, cerrar sesión',
+  //       cancelButtonText: 'Cancelar',
+  //     });
+
+  //     if (result.isConfirmed) {
+  //       await this.userService.logout();
+  //       Swal.fire('Completado', 'La sesión ha sido cerrada.', 'success');
+  //     }
+  //   } catch (error) {
+  //     Swal.fire('Error', error.message, 'error');
+  //   }
+  // }
+  //!  cierre de sesion
   logout() {
     Swal.fire({
       title: '¿Está seguro que desea cerrar sesión?',
