@@ -1,0 +1,63 @@
+<!-- class="modal-image-bg hidden animated fadeIn fast" -->
+<div
+  class="border-2 border-slate-300"
+  [class.hidden]="modalImageService.hideModal"
+>
+  <div
+    class="border-2 border-slate-300"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel1"
+    style="display: block"
+  >
+    <div class="text-2xl" role="document">
+      <div class="text-2xl">
+        <div class="text-xl">
+          <h4 class="text-md" id="exampleModalLabel1">Upload your image</h4>
+          <button
+            type="button"
+            class="border-2 border-slate-300"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="border-2 border-slate-300">
+          <h3>Select new image</h3>
+          <div class="text-center border-2 border-slate-300">
+            <img
+              *ngIf="!imgTemp"
+              [src]="modalImageService.img"
+              class="img-avatar"
+              alt=""
+            />
+            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" alt="" />
+          </div>
+          <input
+            type="file"
+            (change)="changeImage($any($event.target).files[0])"
+          />
+        </div>
+        <div class="border-2 border-slate-300">
+          <button
+            type="button"
+            class="border-2 border-slate-300"
+            data-dismiss="modal"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="border-2 border-slate-300"
+            (click)="uploadImg()"
+          >
+            Upload image
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

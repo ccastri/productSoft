@@ -15,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
 import { PagesComponent } from './pages.component';
 import { CartComponent } from './cart/cart.component';
 import { MaterialModule } from '../material.module';
+// import { AssetPipe } from '../pipes/asset.pipes';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MaterialModule } from '../material.module';
     ProductsComponent,
     PagesComponent,
     CartComponent,
+    // AssetPipe,
   ],
   exports: [DashboardComponent, ProductsComponent, PagesComponent],
   imports: [
@@ -29,6 +31,7 @@ import { MaterialModule } from '../material.module';
     BrowserAnimationsModule,
     RouterModule,
     SharedModule,
+    // AssetPipe,
     FormsModule,
     MaterialModule,
     ReactiveFormsModule,

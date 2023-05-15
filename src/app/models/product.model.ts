@@ -3,11 +3,12 @@ export class Product {
     public make: string,
     public model: string,
     public description: string,
-    public price: string,
+    public price: number,
     public stockAmount: number,
     public OS: string,
     public disadvantage: string,
     public screenSize: string,
-    public stockCode: string
+    public stockCode: string,
+    public id?: string
   ) {}
 }

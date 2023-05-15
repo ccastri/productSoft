@@ -1,14 +1,181 @@
-<div>
-  <p>products works!</p>
-  <div *ngFor="let product of products">
-    <h2>{{ product.make }}</h2>
-    <p>{{ product.model }}</p>
-    <p>{{ product.description }}</p>
-    <p>{{ product.price }}</p>
-    <p>{{ product.stockAmount }}</p>
-    <p>{{ product.OS }}</p>
-    <p>{{ product.disadvantage }}</p>
-    <p>{{ product.screenSize }}</p>
-    <p>{{ product.stockCode }}</p>
+<div class="flex flex-col p-8 w-full">
+  <table>
+    <thead>
+      <tr class="text-slate-200 bg-slate-500">
+        <th class="border-x-2 border-t border-black">Product Number</th>
+        <th class="border-x-2 border-t border-black">Make</th>
+        <th class="border-x-2 border-t border-black">Model</th>
+        <th class="border-x-2 border-t border-black">Description</th>
+        <th class="border-x-2 border-t border-black">Price</th>
+        <th class="border-x-2 border-t border-black">Stock Amount</th>
+        <th class="border-x-2 border-t border-black">OS</th>
+        <th class="border-x-2 border-t border-black">Disadvantage</th>
+        <th class="border-x-2 border-t border-black">Screen Size</th>
+        <th class="border-x-2 border-t border-black">Stock Code</th>
+      </tr>
+    </thead>
+    <tbody class="h-full">
+      <tr
+        *ngFor="let product of products; let i = index"
+        class="text-center text-slate-100 bg-blue-400 w-full"
+      >
+        <td class="border-2 border-slate-600">{{ i + 1 }}</td>
+        <td class="border-2 border-slate-600">{{ product.make }}</td>
+        <td class="border-2 border-slate-600">{{ product.model }}</td>
+        <td class="border-2 border-slate-600">{{ product.description }}</td>
+        <td class="border-2 border-slate-600">{{ product.price }}</td>
+        <td class="border-2 border-slate-600">{{ product.stockAmount }}</td>
+        <td class="border-2 border-slate-600">{{ product.OS }}</td>
+        <td class="border-2 border-slate-600">{{ product.disadvantage }}</td>
+        <td class="border-2 border-slate-600">{{ product.screenSize }}</td>
+        <td class="border-2 border-slate-600">{{ product.stockCode }}</td>
+        <div
+          class="flex border-2 border-slate-600 space-x-8 items-end px-2 w-full h-full"
+        >
+          <!-- <button>Add</button> -->
+          <!-- <button>Delete</button> -->
+          <div class="flex flex-col justify-between items-center py-4">
+            <mat-form-field class="w-16">
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="amountToAdd"
+                placeholder="Amount"
+              />
+            </mat-form-field>
+            <mat-icon (click)="addProduct(product.id ?? '', amountToAdd ?? 0)"
+              >add</mat-icon
+            >
+          </div>
+          <div class="w-[50%] flex flex-col jsutify-between items-center py-4">
+            <mat-form-field class="w-16 flex">
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="amountToDecrease"
+                placeholder="Amount"
+              />
+            </mat-form-field>
+            <!-- (click)="removeProduct(product.id ?? '', amountToAdd ?? 0)" -->
+            <mat-icon
+              (click)="decreaseProduct(product.id ?? '', amountToAdd ?? 0)"
+              >remove</mat-icon
+            >
+          </div>
+          <!-- <mat-icon>remove</mat-icon> -->
+        </div>
+      </tr>
+    </tbody>
+  </table>
+  <div class="flex items-center w-full justify-center space-y-4 px-3 py-2">
+    <button class="bg-blue-500" (click)="toggleOpen()">New</button>
+  </div>
+  <div
+    class=""
+    *ngIf="isOpen"
+    class="flex flex-row p-8 w-full bg-slate-300 justify-center"
+  >
+    <form
+      [formGroup]="productForm"
+      (ngSubmit)="onSubmit()"
+      class="grid grid-cols-5 gap-4"
+    >
+      <div class="flex flex-col">
+        <label for="make" class="font-semibold text-xl">Make</label>
+        <input
+          class="focus:outline-none focus:border-blue-500"
+          id="make"
+          formControlName="make"
+          matInput
+          type="text"
+          required
+        />
+        <span
+          *ngIf="
+            productForm.controls['make'].invalid &&
+            productForm.controls['make'].touched
+          "
+        >
+          Make is required.
+        </span>
+      </div>
+      <div class="flex flex-col">
+        <label for="model">Model</label>
+        <input
+          id="model"
+          matInput
+          type="text"
+          formControlName="model"
+          required
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="description">Description</label>
+        <input
+          id="description"
+          matInput
+          type="text"
+          formControlName="description"
+          required
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="price">Price</label>
+        <input
+          id="price"
+          matInput
+          type="number"
+          formControlName="price"
+          required
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="stockAmount">Stock Amount</label>
+        <input
+          id="stockAmount"
+          matInput
+          type="number"
+          formControlName="stockAmount"
+          required
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="os">OS</label>
+        <input id="os" matInput type="text" formControlName="OS" required />
+      </div>
+      <div class="flex flex-col">
+        <label for="disadvantage">Disadvantage</label>
+        <input
+          id="disadvantage"
+          matInput
+          type="text"
+          formControlName="disadvantage"
+          required
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="screenSize">Screen Size</label>
+        <input
+          id="screenSize"
+          matInput
+          type="text"
+          formControlName="screenSize"
+          required
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="stockCode">Stock Code</label>
+        <input
+          id="stockCode"
+          matInput
+          type="text"
+          formControlName="stockCode"
+          required
+        />
+      </div>
+      <button type="submit" class="border-2 border-blue-500">
+        Add Product
+      </button>
+    </form>
   </div>
 </div>
