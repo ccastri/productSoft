@@ -12,23 +12,24 @@
         <th class="border-x-2 border-t border-black">Disadvantage</th>
         <th class="border-x-2 border-t border-black">Screen Size</th>
         <th class="border-x-2 border-t border-black">Stock Code</th>
+        <th class="border-x-2 border-t border-black">Editar stock</th>
       </tr>
     </thead>
     <tbody class="h-full">
       <tr
         *ngFor="let product of products; let i = index"
-        class="text-center text-slate-100 bg-blue-400 w-full"
+        class="text-center text-slate-700 bg-slate-200 w-full"
       >
-        <td class="border-2 border-slate-600">{{ i + 1 }}</td>
-        <td class="border-2 border-slate-600">{{ product.make }}</td>
-        <td class="border-2 border-slate-600">{{ product.model }}</td>
-        <td class="border-2 border-slate-600">{{ product.description }}</td>
-        <td class="border-2 border-slate-600">{{ product.price }}</td>
-        <td class="border-2 border-slate-600">{{ product.stockAmount }}</td>
-        <td class="border-2 border-slate-600">{{ product.OS }}</td>
-        <td class="border-2 border-slate-600">{{ product.disadvantage }}</td>
-        <td class="border-2 border-slate-600">{{ product.screenSize }}</td>
-        <td class="border-2 border-slate-600">{{ product.stockCode }}</td>
+        <td class="border-2 border-slate-300">{{ i + 1 }}</td>
+        <td class="border-2 border-slate-300">{{ product.make }}</td>
+        <td class="border-2 border-slate-300">{{ product.model }}</td>
+        <td class="border-2 border-slate-300">{{ product.description }}</td>
+        <td class="border-2 border-slate-300">{{ product.price }}</td>
+        <td class="border-2 border-slate-300">{{ product.stockAmount }}</td>
+        <td class="border-2 border-slate-300">{{ product.OS }}</td>
+        <td class="border-2 border-slate-300">{{ product.disadvantage }}</td>
+        <td class="border-2 border-slate-300">{{ product.screenSize }}</td>
+        <td class="border-2 border-slate-300">{{ product.stockCode }}</td>
         <div
           class="flex border-2 border-slate-600 space-x-8 items-end px-2 w-full h-full"
         >
@@ -58,7 +59,7 @@
             </mat-form-field>
             <!-- (click)="removeProduct(product.id ?? '', amountToAdd ?? 0)" -->
             <mat-icon
-              (click)="decreaseProduct(product.id ?? '', amountToAdd ?? 0)"
+              (click)="decreaseProduct(product.id ?? '', amountToDecrease ?? 0)"
               >remove</mat-icon
             >
           </div>
@@ -68,7 +69,12 @@
     </tbody>
   </table>
   <div class="flex items-center w-full justify-center space-y-4 px-3 py-2">
-    <button class="bg-blue-500" (click)="toggleOpen()">New</button>
+    <button
+      class="bg-slate-500 hover:bg-slate-400 border-2 border-slate-200 hover:border-slate-400 font-semibold hover:font-bold text-md px-6 my-2 py-2 text-slate-200 transition duration-200 transform ease-in-out hover:scale-125"
+      (click)="toggleOpen()"
+    >
+      New
+    </button>
   </div>
   <div
     class=""
@@ -78,7 +84,7 @@
     <form
       [formGroup]="productForm"
       (ngSubmit)="onSubmit()"
-      class="grid grid-cols-5 gap-4"
+      class="grid grid-cols-5 gap-4 text-slate-700"
     >
       <div class="flex flex-col">
         <label for="make" class="font-semibold text-xl">Make</label>
@@ -173,7 +179,10 @@
           required
         />
       </div>
-      <button type="submit" class="border-2 border-blue-500">
+      <button
+        type="submit"
+        class="border-2 bg-slate-100 border-slate-200 hover:bg-slate-400 transition duration-200 transform ease-in-out hover:scale-105"
+      >
         Add Product
       </button>
     </form>

@@ -113,14 +113,25 @@ export class ProductService {
     }
   }
   // !async await para obtener producto por ID
+
   getProductById(id: string): Observable<Product | undefined> {
+    console.log(id);
     try {
-      const productDoc = this.db.doc<Product>(`products/${id}`);
-      const product = productDoc.valueChanges();
-      if (!product) {
-        throw new Error(`Product with id ${id} not found`);
-      }
-      return product as Observable<Product>;
+      const productDoc = this.db.doc<Product>(`productos/${id}`);
+      console.log(productDoc);
+      const product = productDoc.snapshotChanges().pipe(
+        map((snapshot) => {
+          if (!snapshot.payload.exists) {
+            throw new Error(`Product with id ${id} not found`);
+          }
+          const data = snapshot.payload.data();
+          const productId = snapshot.payload.id;
+          console.log(productId);
+          return { id: productId, ...data } as Product;
+        })
+      );
+      console.log(product);
+      return product;
     } catch (error) {
       console.error(error);
       return of(undefined);

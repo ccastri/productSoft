@@ -22,15 +22,17 @@ export class ProductsComponent implements OnInit {
   amountToAdd: number = 0; // Add this line to define the amountToAdd property
   amountToDecrease: number = 0; // Add this line to define the amountToAdd property
   productForm!: FormGroup;
+  selectedProduct: Product | undefined;
 
   constructor(public productService: ProductService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    // !Toma el primer
     this.productService
       .getProducts()
       .pipe(take(1))
       .subscribe((products) => {
-        console.log(products);
+        // console.log(products);
         this.products = products;
       });
 
@@ -49,17 +51,139 @@ export class ProductsComponent implements OnInit {
   // addProduct(id: string, amount: number): void {
   //   this.productService.addStockAmount(id, amount);
   // }
+  // !Helper to get the ID from the firebase doc:
+  // !You gotta wait for the id from the pressed HTML button
+  // !Which seems to give you a promise type IProduct or undefined when
+  // !Just listening and nothing has been yet clicked.
+  // !Also it's being called by the addProduct method when the user clicks
+
+  // !--------------Read the entire explanation UBOVE-----------------------!
+  // !--------------Read the entire explanation UBOVE-----------------------!
+  // !--------------Read the entire explanation UBOVE-----------------------!
+  loadSelectedProduct(productId: string) {
+    this.productService.getProductById(productId).subscribe(
+      (product) => {
+        if (product) {
+          this.selectedProduct = product;
+          console.log(this.selectedProduct);
+        } else {
+          console.error(`Product with id ${productId} not found`);
+        }
+      },
+      (error) => {
+        console.error('Error loading product:', error);
+      }
+    );
+  }
+
+  // async loadSelectedProduct(productId: string) {
+  //   console.log(productId);
+  //   try {
+  //     const product = await this.productService
+  //       .getProductById(productId)
+  //       .toPromise();
+  //     console.log(product);
+  //     if (product) {
+  //       this.selectedProduct = product;
+  //       console.log(this.selectedProduct);
+  //     } else {
+  //       console.error(`Product with id ${productId} not found`);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error loading product:', error);
+  //   }
+  // }
+  //! At first we're gettting the id from the pressed + button
+  // ! at the matching row. secondly you have to set the first value (undefined by default)
   async addProduct(id: string, amount: number): Promise<void> {
-    if (this.amountToAdd <= 0) {
+    await this.loadSelectedProduct(id);
+
+    // Esta funcion entra al siguiente if y selectedProduct da undefined en vez de el id del documento de firebase que estoy queriendo aumentar
+    console.log(this.selectedProduct);
+    if (!this.selectedProduct) {
+      console.error('Selected product not found');
+      return;
+    }
+
+    // !----------------------------------------------------------------!
+    // ! Here we cheked the ¿re's a product being clicked now we need
+    // ! To realize the equal amount our product is attempting to updated
+
+    // ! Since we got the matching product id, we can go ahead and update the document
+    // !Being updated we're mapping through the array passed by produc
+    // !-------------------------------------------------------------------------------------------
+
+    try {
+      this.selectedProduct.stockAmount += amount;
+
+      const updatedProducts = this.products
+        .map((product) => {
+          if (product.id === id) {
+            return this.selectedProduct;
+          }
+          return product;
+        })
+        .filter((product) => product !== undefined) as Product[];
+
+      this.products = updatedProducts;
+
+      await this.productService.updateProduct(this.selectedProduct);
+
       Swal.fire(
-        'Error',
-        'Por favor ingrese un numero entero positivo.',
-        'error'
+        'Cambios aplicados',
+        'Inventario actualizado correctamente',
+        'success'
       );
+      console.log('Stock amount updated successfully!');
+    } catch (error) {
+      console.error('Error updating stock amount:', error);
+    }
+  }
+
+  // !To open/close the visible/hidden form.
+
+  toggleOpen() {
+    this.isOpen = !this.isOpen;
+    console.log(this.isOpen);
+  }
+
+  // async decreaseProduct(id: string, amount: number): Promise<void> {
+  //   if (this.amountToDecrease <= 0) {
+  //     Swal.fire('Error', 'Please enter a positive integer.', 'error');
+  //     return;
+  //   }
+  //   try {
+  //     await this.productService.decreaseStockAmount(id, amount);
+  //     Swal.fire(
+  //       'Cambios aplicados',
+  //       'Inventario actualizado correctamente',
+  //       'success'
+  //     );
+  //     console.log('Inventario actualizado correctamente');
+  //   } catch (err) {
+  //     console.error('Error removiendo productos:', err);
+  //   }
+  // }
+  async decreaseProduct(id: string, amount: number): Promise<void> {
+    if (amount <= 0) {
+      Swal.fire('Error', 'Please enter a positive integer.', 'error');
       return;
     }
     try {
-      await this.productService.addStockAmount(id, amount);
+      // Call the service method to decrease the stock amount in Firebase
+      await this.productService.decreaseStockAmount(id, amount);
+
+      // Update the local state of the Product object with the new stockAmount
+      const updatedProducts = this.products.map((product) => {
+        if (product.id === id) {
+          product.stockAmount -= amount;
+        }
+        return product;
+      });
+
+      // Update the products array with the updatedProducts
+      this.products = updatedProducts;
+
       Swal.fire(
         'Cambios aplicados',
         'Inventario actualizado correctamente',
@@ -67,30 +191,7 @@ export class ProductsComponent implements OnInit {
       );
       console.log('Stock amount updated successfully!');
     } catch (err) {
-      console.error('Error adding product:', err);
-    }
-  }
-
-  toggleOpen() {
-    this.isOpen = !this.isOpen;
-    console.log(this.isOpen);
-  }
-
-  async decreaseProduct(id: string, amount: number): Promise<void> {
-    if (this.amountToDecrease <= 0) {
-      Swal.fire('Error', 'Please enter a positive integer.', 'error');
-      return;
-    }
-    try {
-      await this.productService.decreaseStockAmount(id, amount);
-      Swal.fire(
-        'Cambios aplicados',
-        'Inventario actualizado correctamente',
-        'success'
-      );
-      console.log('Stock amount decreased successfully!');
-    } catch (err) {
-      console.error('Error removing products:', err);
+      console.error('Error removiendo productos:', err);
     }
   }
   async createProduct(product: Product): Promise<any> {
@@ -102,6 +203,11 @@ export class ProductsComponent implements OnInit {
       Swal.fire('Error', 'Failed to add product', 'error');
     }
   }
+
+  // !TODO:
+  // !This is the next step Yesterday I was able to create a new product using this form
+  // ! I was working on it's  validations
+  // !But is pretty easy though
 
   onSubmit() {
     if (this.productForm.invalid) {

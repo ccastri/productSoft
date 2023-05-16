@@ -10,16 +10,12 @@ import 'firebase/compat/auth';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import Swal from 'sweetalert2';
-const base_url = environment.base_url;
-declare const gapi: any;
+// const base_url = environment.base_url;
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  // public auth2: any;
-  // public user: User;
-
   public isAuth = new BehaviorSubject<boolean>(false);
   constructor(public afAuth: AngularFireAuth) {
     // Esto garantiza que haya un usuario
@@ -85,7 +81,25 @@ export class UserService {
     return userCredential;
   }
 
-  public async createUser(uid: string, email: string, displayName: string) {
+  // ! async await para crear usuarios
+  // async createUser(uid: string, email: string, displayName: string) {
+  //   try {
+  //     const db = getFirestore();
+  //     const userRef = collection(db, 'users');
+  //     const userData = {
+  //       uid,
+  //       email,
+  //       displayName,
+  //     };
+  //     const docRef = await addDoc(userRef, userData);
+  //     console.log('User created:', docRef.id);
+  //     return docRef;
+  //   } catch (error) {
+  //     console.error('Error creating user:', error);
+  //     throw error;
+  //   }
+  // }
+  async createUser(uid: string, email: string, displayName: string) {
     const db = getFirestore();
     const userRef = collection(db, 'users');
     const userData = {
