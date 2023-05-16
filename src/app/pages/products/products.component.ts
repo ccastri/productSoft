@@ -205,6 +205,14 @@ export class ProductsComponent implements OnInit {
 
     try {
       await this.productService.addProduct(product);
+      this.productService
+        .getProducts()
+        .pipe(take(1))
+        .subscribe((products) => {
+          // console.log(products);
+          this.products = products;
+        });
+
       Swal.fire('Success', 'Product added successfully!', 'success');
     } catch (error) {
       console.error('Error adding product:', error);

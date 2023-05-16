@@ -21,6 +21,7 @@ export class ProductService {
       this.productsCollection = this.db.collection<Product>('productos');
     }
   }
+
   //! async/await para obtener coleccion entera de productos
   // ! getProducts without async/await
   getProducts(): Observable<Product[]> {
@@ -38,6 +39,7 @@ export class ProductService {
   async addProduct(product: Product): Promise<any> {
     try {
       await this.productsCollection.add(product);
+      this.getProducts();
       Swal.fire('Success', 'Product added successfully!', 'success');
     } catch (error) {
       console.error('Error adding product:', error);
