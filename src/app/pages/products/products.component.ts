@@ -8,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 import { take } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 
+import Swal from 'sweetalert2';
+// private currencyPipe: CurrencyPipe,
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -167,7 +168,7 @@ export class ProductsComponent implements OnInit {
     if (amount > selectedProduct.stockAmount) {
       Swal.fire(
         'Error',
-        'The amount to decrease is greater than the available stock.',
+        'The amount to decrease is greater than the minimum available stock.',
         'error'
       );
       return;

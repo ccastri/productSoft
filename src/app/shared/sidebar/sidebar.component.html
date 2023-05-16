@@ -1,14 +1,19 @@
 <!-- Left Sidebar - style you can find in sidebar.scss  -->
 <!-- ============================================================== -->
-<aside class="flex flex-col w-full h-[100%] bg-gray-500">
+<aside class="flex flex-col w-full h-full bg-gray-500">
   <!-- Sidebar scroll-->
   <div
-    class="w-full items-center text-white justify-between flex px-4 my-4 h-12"
+    class="w-full items-center text-white justify-between flex px-4 pt-4 mb-4"
   >
-    <img [src]="'assets/logo.jpg'" class="rounded-md h-12" />
-    <mat-icon fontSize="large" color="primary">menu</mat-icon>
+    <img [src]="'assets/logo.jpg'" class="rounded-md hidden md:flex h-12" />
+    <mat-icon
+      fontSize="large"
+      class="w-full flex transition-all"
+      color="primary"
+      >menu</mat-icon
+    >
   </div>
-  <div class="bg-blue-400 h-screen text-center text-slate-200">
+  <div class="bg-gray-500 h-screen text-center text-slate-200">
     <!-- Sidebar navigation-->
     <nav class="">
       <ul id="sidebarnav">
@@ -34,42 +39,47 @@
             <li><a routerLink="/login">Logout</a></li> -->
           </ul>
         </li>
-        <h1 class="px-2 font-bold text-xl py-3">MENU</h1>
+        <h1 class="px-2 font-bold text-xl mb-2 py-3">MENU</h1>
         <li
           *ngFor="let item of sidebarService.menu"
-          class="px-3 hover:bg-slate-400 transition duration-200 transform ease-in-out hover:scale-105"
+          class="mx-3 hover:bg-slate-400 transition duration-200 transform ease-in-out hover:scale-105"
         >
+          <!-- <div class="bg-slate-400 w-full"> -->
           <a
-            class="p-3"
+            class="py-3"
             href="/dashboard"
             aria-expanded="false"
-            class="space-x-4 flex hover:pb-4 transition duration-200 transform ease-in-out hover:scale-105 hover:text-md hover:font-bold font-semibold w-full"
+            class="space-x-2 flex hover:mb-4 hover:bg-slate-500 transition duration-200 transform ease-in-out hover:scale-105 hover:text-md hover:font-bold font-semibold w-full px-4 py-1"
           >
             <mat-icon fontSize="large" color="primary">{{
               item.icon
             }}</mat-icon>
             <!-- <i [class]="item.icon"></i
             > -->
-            <span class="">
+            <span class="w-full">
               {{ item.title }}
-              <span class="">{{ item.submenu.length }} </span></span
+              <span
+                class="bg-slate-200 w-6 items-end rounded-sm text-red-500 flex justify-center text-center"
+                >{{ item.submenu.length }}
+              </span></span
             ></a
           >
+          <!-- </div> -->
           <ul
             aria-expanded="false"
-            class="hover:transition duration-300 hover:ml-6 transform ease-in-out hover:scale-105 hover:bg-slate-300 hover:text-white"
+            class="hover:transition duration-300 hover:ml-6 transform ease-in-out hover:scale-105 hover:bg-slate-600 hover:text-white"
           >
             <li
               *ngFor="let subMenuItem of item.submenu"
               class="hover:bg-slate-300 hover:text-white"
             >
               <a
-                class="flex items-center w-full transition duration-200 transform ease-in-out hover:scale-105 hover:text-bold hover:text-md hover:bg-slate-500 hover:text-white font-semibold space-x-8"
+                class="flex items-center px-2 w-full transition duration-200 transform ease-in-out hover:scale-105 hover:text-bold hover:text-md hover:text-slate-500 hover:bg-slate-200 font-semibold space-x-8"
                 [routerLink]="subMenuItem.url"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
               >
-                <span class="flex h-12 items-center hover:text-white pr-4 pl-2"
+                <span class="flex w-12 h-8 items-center pr-4 pl-2"
                   ><mat-icon
                     fontSize="60px"
                     color="primary"
@@ -111,6 +121,20 @@
             class="mr-4 text-white flex items-center justify-center"
             >logout</mat-icon
           >Logout</span
+        ></a
+      >
+      <a
+        class="flex items-center w-full transition duration-200 transform ease-in-out hover:scale-105 hover:bg-slate-500 hover:text-bold hover:text-xl"
+        href="/login"
+        ><span
+          class="flex h-12 items-center py-2 pl-2 hover:text-white font-semibold text-md"
+          ><mat-icon
+            fontSize="large"
+            color="primary"
+            (click)="logout()"
+            class="mr-4 text-white flex items-center justify-center"
+            >how_to_reg</mat-icon
+          >Registro</span
         ></a
       >
     </div>
