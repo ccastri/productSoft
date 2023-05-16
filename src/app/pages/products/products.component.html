@@ -83,7 +83,8 @@
   >
     <form
       [formGroup]="productForm"
-      (ngSubmit)="onSubmit()"
+      (ngSubmit)="createProduct()"
+      autocomplete="off"
       class="grid grid-cols-5 gap-4 text-slate-700"
     >
       <div class="flex flex-col">
@@ -92,9 +93,7 @@
           class="focus:outline-none focus:border-blue-500"
           id="make"
           formControlName="make"
-          matInput
           type="text"
-          required
         />
         <span
           *ngIf="
@@ -107,43 +106,19 @@
       </div>
       <div class="flex flex-col">
         <label for="model">Model</label>
-        <input
-          id="model"
-          matInput
-          type="text"
-          formControlName="model"
-          required
-        />
+        <input id="model" type="text" formControlName="model" />
       </div>
       <div class="flex flex-col">
         <label for="description">Description</label>
-        <input
-          id="description"
-          matInput
-          type="text"
-          formControlName="description"
-          required
-        />
+        <input id="description" type="text" formControlName="description" />
       </div>
       <div class="flex flex-col">
         <label for="price">Price</label>
-        <input
-          id="price"
-          matInput
-          type="number"
-          formControlName="price"
-          required
-        />
+        <input id="price" type="number" formControlName="price" />
       </div>
       <div class="flex flex-col">
         <label for="stockAmount">Stock Amount</label>
-        <input
-          id="stockAmount"
-          matInput
-          type="number"
-          formControlName="stockAmount"
-          required
-        />
+        <input id="stockAmount" type="number" formControlName="stockAmount" />
       </div>
       <div class="flex flex-col">
         <label for="os">OS</label>
@@ -151,33 +126,15 @@
       </div>
       <div class="flex flex-col">
         <label for="disadvantage">Disadvantage</label>
-        <input
-          id="disadvantage"
-          matInput
-          type="text"
-          formControlName="disadvantage"
-          required
-        />
+        <input id="disadvantage" type="text" formControlName="disadvantage" />
       </div>
       <div class="flex flex-col">
         <label for="screenSize">Screen Size</label>
-        <input
-          id="screenSize"
-          matInput
-          type="text"
-          formControlName="screenSize"
-          required
-        />
+        <input id="screenSize" type="text" formControlName="screenSize" />
       </div>
       <div class="flex flex-col">
         <label for="stockCode">Stock Code</label>
-        <input
-          id="stockCode"
-          matInput
-          type="text"
-          formControlName="stockCode"
-          required
-        />
+        <input id="stockCode" type="text" formControlName="stockCode" />
       </div>
       <button
         type="submit"

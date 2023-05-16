@@ -22,27 +22,6 @@ export class ProductService {
     }
   }
   //! async/await para obtener coleccion entera de productos
-  // async fetchProducts(): Promise<Product[]> {
-  //   try {
-  //     const productsSnapshot = await this.productsCollection
-  //       .snapshotChanges()
-  //       .pipe(
-  //         tap(console.log),
-  //         map((changes) =>
-  //           changes.map((c: any) => ({
-  //             id: c.payload.doc.id,
-  //             ...c.payload.doc.data(),
-  //           }))
-  //         )
-  //       )
-  //       .toPromise();
-
-  //     return productsSnapshot;
-  //   } catch (error) {
-  //     console.error('Error fetching products:', error);
-  //     throw error;
-  //   }
-  // }
   // ! getProducts without async/await
   getProducts(): Observable<Product[]> {
     return this.productsCollection.snapshotChanges().pipe(
@@ -113,12 +92,14 @@ export class ProductService {
     }
   }
   // !async await para obtener producto por ID
+  // !Consultar la coleccion
+  // !Si el id coincide se hace el snapshot de en la coleccion
+  // !Usando el ID. La variable data contiene la data del documento
+  // ! el motodo devuelve el producto con la info actualizada
 
   getProductById(id: string): Observable<Product | undefined> {
-    console.log(id);
     try {
       const productDoc = this.db.doc<Product>(`productos/${id}`);
-      console.log(productDoc);
       const product = productDoc.snapshotChanges().pipe(
         map((snapshot) => {
           if (!snapshot.payload.exists) {
@@ -126,14 +107,9 @@ export class ProductService {
           }
           const data = snapshot.payload.data();
           const productId = snapshot.payload.id;
-          if (data.stockAmount < 10) {
-            Swal.fire('Alert', 'Stock amount is less than 10', 'warning');
-          }
-          console.log(productId);
           return { id: productId, ...data } as Product;
         })
       );
-      console.log(product);
       return product;
     } catch (error) {
       console.error(error);

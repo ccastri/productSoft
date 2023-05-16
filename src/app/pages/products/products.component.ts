@@ -21,9 +21,21 @@ export class ProductsComponent implements OnInit {
   isOpen = false;
   amountToAdd: number = 0; // Add this line to define the amountToAdd property
   amountToDecrease: number = 0; // Add this line to define the amountToAdd property
-  productForm!: FormGroup;
+  // productForm!: FormGroup;
   selectedProduct: Product | undefined;
 
+  public formSubmitted = false;
+  public productForm = this.fb.group({
+    make: ['', Validators.required],
+    model: ['', Validators.required],
+    description: ['', Validators.required],
+    price: [0, Validators.required],
+    stockAmount: [0, Validators.required],
+    OS: ['', Validators.required],
+    disadvantage: ['', Validators.required],
+    screenSize: ['', Validators.required],
+    stockCode: ['', Validators.required],
+  });
   constructor(public productService: ProductService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -35,38 +47,13 @@ export class ProductsComponent implements OnInit {
         // console.log(products);
         this.products = products;
       });
-
-    this.productForm = this.fb.group({
-      make: ['', Validators.required],
-      model: ['', Validators.required],
-      description: ['', Validators.required],
-      price: ['', Validators.required],
-      stockAmount: ['', Validators.required],
-      OS: ['', Validators.required],
-      disadvantage: ['', Validators.required],
-      screenSize: ['', Validators.required],
-      stockCode: ['', Validators.required],
-    });
   }
-  // addProduct(id: string, amount: number): void {
-  //   this.productService.addStockAmount(id, amount);
-  // }
-  // !Helper to get the ID from the firebase doc:
-  // !You gotta wait for the id from the pressed HTML button
-  // !Which seems to give you a promise type IProduct or undefined when
-  // !Just listening and nothing has been yet clicked.
-  // !Also it's being called by the addProduct method when the user clicks
-
-  // !--------------Read the entire explanation UBOVE-----------------------!
-  // !--------------Read the entire explanation UBOVE-----------------------!
-  // !--------------Read the entire explanation UBOVE-----------------------!
   loadSelectedProduct(productId: string) {
     this.productService.getProductById(productId).subscribe(
       (product) => {
         if (product) {
           this.selectedProduct = product;
-          // console.log(this.selectedProduct);
-          // console.log(this.selectedProduct.stockAmount);
+
           if (this.selectedProduct.stockAmount <= 10) {
             // console.log('aqui toy');
             Swal.fire('Alert', 'Stock amount is less than 10', 'warning');
@@ -80,6 +67,18 @@ export class ProductsComponent implements OnInit {
       }
     );
   }
+  // addProduct(id: string, amount: number): void {
+  //   this.productService.addStockAmount(id, amount);
+  // }
+  // !Helper to get the ID from the firebase doc:
+  // !You gotta wait for the id from the pressed HTML button
+  // !Which seems to give you a promise type IProduct or undefined when
+  // !Just listening and nothing has been yet clicked.
+  // !Also it's being called by the addProduct method when the user clicks
+
+  // !--------------Read the entire explanation UBOVE-----------------------!
+  // !--------------Read the entire explanation UBOVE-----------------------!
+  // !--------------Read the entire explanation UBOVE-----------------------!
 
   // async loadSelectedProduct(productId: string) {
   //   console.log(productId);
@@ -110,13 +109,13 @@ export class ProductsComponent implements OnInit {
       return;
     }
 
-    // !----------------------------------------------------------------!
-    // ! Here we cheked the ¿re's a product being clicked now we need
+    // !------------------------------------------------------------------------------------------!
+    // ! Here we cheked there's a product being clicked now we need
     // ! To realize the equal amount our product is attempting to updated
 
     // ! Since we got the matching product id, we can go ahead and update the document
     // !Being updated we're mapping through the array passed by produc
-    // !-------------------------------------------------------------------------------------------
+    // !------------------------------------------------------------------------------------------!
 
     try {
       this.selectedProduct.stockAmount += amount;
@@ -191,7 +190,19 @@ export class ProductsComponent implements OnInit {
       console.error('Error removiendo productos:', err);
     }
   }
-  async createProduct(product: Product): Promise<any> {
+
+  // !This is to create a new product
+  // !this receive the product details from the form fields
+
+  async createProduct(): Promise<any> {
+    this.formSubmitted = true;
+    // console.log(product);
+    if (this.productForm.invalid) {
+      // Display an error message or perform necessary actions when the form is invalid
+      return;
+    }
+    const product: Product = this.productForm.value as Product;
+
     try {
       await this.productService.addProduct(product);
       Swal.fire('Success', 'Product added successfully!', 'success');
@@ -206,17 +217,17 @@ export class ProductsComponent implements OnInit {
   // ! I was working on it's  validations
   // !But is pretty easy though
 
-  onSubmit() {
-    if (this.productForm.invalid) {
-      // Handle form validation errors
-      return;
-    }
+  // onSubmit() {
+  //   if (this.productForm.invalid) {
+  //     // Handle form validation errors
+  //     return;
+  //   }
 
-    const formData = this.productForm.value;
+  //   const formData = this.productForm.value;
 
-    this.createProduct(formData);
+  //   this.createProduct(formData);
 
-    // Reset the form after submission
-    this.productForm.reset();
-  }
+  //   // Reset the form after submission
+  //   this.productForm.reset();
+  // }
 }
