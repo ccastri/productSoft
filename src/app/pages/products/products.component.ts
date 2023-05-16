@@ -65,7 +65,12 @@ export class ProductsComponent implements OnInit {
       (product) => {
         if (product) {
           this.selectedProduct = product;
-          console.log(this.selectedProduct);
+          // console.log(this.selectedProduct);
+          // console.log(this.selectedProduct.stockAmount);
+          if (this.selectedProduct.stockAmount <= 10) {
+            // console.log('aqui toy');
+            Swal.fire('Alert', 'Stock amount is less than 10', 'warning');
+          }
         } else {
           console.error(`Product with id ${productId} not found`);
         }
@@ -129,11 +134,11 @@ export class ProductsComponent implements OnInit {
 
       await this.productService.updateProduct(this.selectedProduct);
 
-      Swal.fire(
-        'Cambios aplicados',
-        'Inventario actualizado correctamente',
-        'success'
-      );
+      // Swal.fire(
+      //   'Cambios aplicados',
+      //   'Inventario actualizado correctamente',
+      //   'success'
+      // );
       console.log('Stock amount updated successfully!');
     } catch (error) {
       console.error('Error updating stock amount:', error);
@@ -147,48 +152,40 @@ export class ProductsComponent implements OnInit {
     console.log(this.isOpen);
   }
 
-  // async decreaseProduct(id: string, amount: number): Promise<void> {
-  //   if (this.amountToDecrease <= 0) {
-  //     Swal.fire('Error', 'Please enter a positive integer.', 'error');
-  //     return;
-  //   }
-  //   try {
-  //     await this.productService.decreaseStockAmount(id, amount);
-  //     Swal.fire(
-  //       'Cambios aplicados',
-  //       'Inventario actualizado correctamente',
-  //       'success'
-  //     );
-  //     console.log('Inventario actualizado correctamente');
-  //   } catch (err) {
-  //     console.error('Error removiendo productos:', err);
-  //   }
-  // }
   async decreaseProduct(id: string, amount: number): Promise<void> {
     if (amount <= 0) {
       Swal.fire('Error', 'Please enter a positive integer.', 'error');
       return;
     }
+
+    const selectedProduct = this.products.find((product) => product.id === id);
+
+    if (!selectedProduct) {
+      console.error('Selected product not found');
+      return;
+    }
+
+    if (amount > selectedProduct.stockAmount) {
+      Swal.fire(
+        'Error',
+        'The amount to decrease is greater than the available stock.',
+        'error'
+      );
+      return;
+    }
+
     try {
       // Call the service method to decrease the stock amount in Firebase
       await this.productService.decreaseStockAmount(id, amount);
 
       // Update the local state of the Product object with the new stockAmount
-      const updatedProducts = this.products.map((product) => {
-        if (product.id === id) {
-          product.stockAmount -= amount;
-        }
-        return product;
-      });
+      selectedProduct.stockAmount -= amount;
 
-      // Update the products array with the updatedProducts
-      this.products = updatedProducts;
-
-      Swal.fire(
-        'Cambios aplicados',
-        'Inventario actualizado correctamente',
-        'success'
-      );
+      // Swal.fire(
+      //   'Cambios aplicados',
+      //   'Inventario actualizado correctamente',
+      //   'success'
+      // );
       console.log('Stock amount updated successfully!');
     } catch (err) {
       console.error('Error removiendo productos:', err);

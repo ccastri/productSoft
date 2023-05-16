@@ -126,6 +126,9 @@ export class ProductService {
           }
           const data = snapshot.payload.data();
           const productId = snapshot.payload.id;
+          if (data.stockAmount < 10) {
+            Swal.fire('Alert', 'Stock amount is less than 10', 'warning');
+          }
           console.log(productId);
           return { id: productId, ...data } as Product;
         })
