@@ -1,26 +1,37 @@
-<div class="flex w-full flex-col h-full border-2 border-green-300 p-4">
-  <div class="border-2 flex flex-row w-full border-blue-500 space-x-2" pt-2>
-    <p class="border-2 border-blue-200 w-20">Factura No.</p>
+<div
+  class="flex w-full flex-col h-full border-2 border-green-300 p-4 bg-slate-200"
+>
+  <div class="text-slate-700">
+    <select type="text">
+      <option *ngFor="let product of products; let i = index" value="">
+        {{ product.make }}
+      </option>
+    </select>
+  </div>
+
+  <div
+    class="border-2 py-4 justify-between px-4 flex flex-row w-full bg-gray-500 space-x-2"
+    pt-2
+  >
+    <p class="w-24">Factura No.</p>
     <p class="bg-slate-300 rounded-md w-12 text-center h-6">AI</p>
     <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p>
   </div>
   <div
-    class="border-2 flex h-20 justify-center items-center w-full border-red-300"
+    class="space-y-6 flex p-12 flex-col h-20 justify-center bg-slate-800 items-start w-full"
   >
+    <p>Fecha</p>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Choose a date" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </div>
-  <div
-    class="py-2 border-2 flex flex-row w-full border-blue-500 space-x-2"
-    pt-2
-  >
-    <p class="border-2 border-blue-200 w-20">Cliente</p>
+  <div class="p-4 flex flex-row w-full bg-slate-500 space-x-2 items-center">
+    <p class="w-20 flex">Cliente</p>
     <select
       type="select"
-      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+      class="bg-slate-600 outline-none flex items-center justify-center rounded-md w-full text-center h-8"
     >
       <option>SAN NICOLAS LOCAL 45</option>
       <option>SAN ANDRESITO LOCAL 4305</option>
@@ -28,70 +39,56 @@
     </select>
     <!-- <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p> -->
   </div>
-  <div
-    class="border-2 items-center flex flex-row w-full border-blue-500 space-x-2"
-    pt-2
-  >
-    <p class="border-2 border-blue-200 w-20">Origen Factura</p>
+  <div class="p-4 items-center flex flex-row w-full bg-slate-500 space-x-2">
+    <p class="">Origen Factura</p>
     <select
       type="select"
-      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+      class="bg-slate-600 flex outline-none items-center justify-center rounded-md w-full text-center h-8"
     >
       <option>DIRECTA</option>
       <option>INDIRECTA</option>
     </select>
     <input
       text="text"
-      class="border-2 rounded-md text-center h-8 w-28"
+      class="rounded-md text-center bg-slate-600 outline-none h-8 w-24"
       placeholder=""
     />
   </div>
-  <div
-    class="border-2 py-2 flex flex-row w-full border-blue-500 space-x-2"
-    pt-2
-  >
-    <p class="border-2 border-blue-200 w-20">Vendedor</p>
+  <div class="py-2 flex flex-row bg-slate-500 w-full p-4 space-x-2">
+    <p class="w-20">Vendedor</p>
     <select
       type="select"
-      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+      class="bg-slate-600 flex outline-none items-center justify-center rounded-md w-full text-center h-8"
     >
       <option>CAMILO CASTRILLON</option>
       <option>DANIELA GARCIA</option>
       <option>ALEJANDRA DIAZ</option>
     </select>
   </div>
-  <div
-    class="border-2 flex h-20 justify-center items-center w-full border-red-300"
-  >
+  <div class="p-4 flex h-20 justify-center items-center w-full bg-slate-800">
     <p class="mr-4">Moneda</p>
     <select
       type="select"
-      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+      class="flex items-center bg-slate-500 outline-none justify-center rounded-md w-full text-center h-8"
     >
       <option>PESO</option>
       <option>DOLAR</option>
       <option>EURO</option>
     </select>
   </div>
-  <div
-    class="border-2 items-center flex flex-row w-full border-blue-500 space-x-2"
-    pt-2
-  >
-    <p class="border-2 border-blue-200 w-20">Tasa de Cambio</p>
+  <div class="items-center p-4 flex flex-row w-full bg-slate-500 space-x-2">
+    <p class="w-20">Tasa de Cambio</p>
     <input
       text="text"
-      class="border-2 w-full rounded-md text-center h-8"
-      placeholder="4.7%"
+      class="bg-slate-700 outline-none w-full rounded-md text-center h-8"
+      placeholder="Tasa de cambio"
     />
   </div>
-  <div
-    class="py-2 border-2 flex flex-row w-full border-blue-500 space-x-2"
-    pt-2
-  >
-    <p class="border-2 border-blue-200 w-20">Documento Ref.</p>
+  <div class="p-4 flex flex-row w-full bg-slate-500 space-x-2">
+    <p class="w-20">Documento Ref.</p>
     <select
       type="select"
-      class="border-2 flex items-center justify-center rounded-md w-full text-center h-8"
+      class="flex outline-none bg-slate-600 items-center justify-center rounded-md w-full text-center h-8"
     >
       <option>DOCUMENTO A</option>
       <option>DOCUMENTO B</option>
@@ -100,14 +97,14 @@
     <!-- <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p> -->
   </div>
   <div
-    class="border-2 py-2 flex space-y-2 flex-col w-full border-blue-500"
+    class="p-4 flex bg-slate-800 space-y-4 flex-col w-full justify-center"
     pt-2
   >
     <div class="flex space-x-4 items-end">
-      <p class="border-2 border-blue-200 w-20">Forma de pago</p>
+      <p class="w-56">Forma de pago</p>
       <select
         type="select"
-        class="border-2 flex items-center justify-center rounded-md text-center w-full h-8"
+        class="outline-none bg-slate-500 flex items-center justify-center rounded-md text-center w-full h-8"
       >
         <option>Credito</option>
         <option>Debito</option>
@@ -116,10 +113,10 @@
       </select>
     </div>
     <div class="flex space-x-4">
-      <p class="border-2 border-blue-200 w-20">Plazo</p>
+      <p class="w-56">Plazo</p>
       <input
-        type="text"
-        class="w-full border-2 text-right pr-4"
+        type="number"
+        class="w-full outline-none rounded-md text-right pr-4"
         placeholder="0"
       />
     </div>
@@ -163,7 +160,7 @@
     </tbody>
   </table>
   <div
-    class="flex border-2 items-center space-x-2 justify-center border-black flex-row h-44"
+    class="flex items-center space-x-2 justify-center bg-slate-800 border-black flex-row h-44"
   >
     <mat-icon fontSize="120px" color="blue">edit</mat-icon>
     <mat-icon fontSize="large" color="primary">delete</mat-icon>
