@@ -1,6 +1,4 @@
-<div
-  class="flex w-full flex-col h-full border-2 border-green-300 p-4 bg-slate-200"
->
+<div class="flex w-full flex-col h-full p-4 bg-slate-200">
   <div class="text-slate-700">
     <select type="text">
       <option *ngFor="let product of products; let i = index" value="">
@@ -10,7 +8,7 @@
   </div>
 
   <div
-    class="border-2 py-4 justify-between px-4 flex flex-row w-full bg-gray-500 space-x-2"
+    class="py-4 justify-between px-4 flex flex-row w-full bg-gray-500 space-x-2"
     pt-2
   >
     <p class="w-24">Factura No.</p>
@@ -18,14 +16,16 @@
     <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p>
   </div>
   <div
-    class="space-y-6 flex p-12 flex-col h-20 justify-center bg-slate-800 items-start w-full"
+    class="flex p-4 flex-col h-28 justify-center bg-slate-800 items-start w-full"
   >
     <p>Fecha</p>
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a date" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+    <div class="pt-2">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
   </div>
   <div class="p-4 flex flex-row w-full bg-slate-500 space-x-2 items-center">
     <p class="w-20 flex">Cliente</p>
