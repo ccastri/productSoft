@@ -57,14 +57,18 @@ export class ProductsComponent implements OnInit {
 
           if (this.selectedProduct.stockAmount <= 10) {
             // console.log('aqui toy');
-            Swal.fire('Alert', 'Stock amount is less than 10', 'warning');
+            Swal.fire(
+              'Alert',
+              'No hay suficientes unidades disponibles',
+              'warning'
+            );
           }
         } else {
-          console.error(`Product with id ${productId} not found`);
+          console.error(`Producto con id ${productId} no encontradp`);
         }
       },
       (error) => {
-        console.error('Error loading product:', error);
+        console.error('Error cargando producto:', error);
       }
     );
   }
@@ -106,7 +110,7 @@ export class ProductsComponent implements OnInit {
     // Esta funcion entra al siguiente if y selectedProduct da undefined en vez de el id del documento de firebase que estoy queriendo aumentar
     console.log(this.selectedProduct);
     if (!this.selectedProduct) {
-      console.error('Selected product not found');
+      console.error('Producto seleccionado no encontrado');
       return;
     }
 
@@ -139,9 +143,9 @@ export class ProductsComponent implements OnInit {
       //   'Inventario actualizado correctamente',
       //   'success'
       // );
-      console.log('Stock amount updated successfully!');
+      console.log('Inventario actualizado con exito!');
     } catch (error) {
-      console.error('Error updating stock amount:', error);
+      console.error('Error actualizando la cantidad de inventario:', error);
     }
   }
 
@@ -154,21 +158,21 @@ export class ProductsComponent implements OnInit {
 
   async decreaseProduct(id: string, amount: number): Promise<void> {
     if (amount <= 0) {
-      Swal.fire('Error', 'Please enter a positive integer.', 'error');
+      Swal.fire('Error', 'Cantidad no valida. Intente de nuevo', 'error');
       return;
     }
 
     const selectedProduct = this.products.find((product) => product.id === id);
 
     if (!selectedProduct) {
-      console.error('Selected product not found');
+      console.error('Producto seleccionado no fue encontrado');
       return;
     }
 
     if (amount > selectedProduct.stockAmount) {
       Swal.fire(
         'Error',
-        'The amount to decrease is greater than the minimum available stock.',
+        'Inventario insuficiente. Stock no disponible',
         'error'
       );
       return;
@@ -214,10 +218,10 @@ export class ProductsComponent implements OnInit {
           this.products = products;
         });
 
-      Swal.fire('Success', 'Product added successfully!', 'success');
+      Swal.fire('Success', 'Producto añadido exitosamente!', 'success');
     } catch (error) {
       console.error('Error adding product:', error);
-      Swal.fire('Error', 'Failed to add product', 'error');
+      Swal.fire('Error', 'Fallo al añadir producto', 'error');
     }
   }
 

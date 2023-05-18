@@ -16,9 +16,9 @@ export class SidebarService {
       icon: 'dashboard_customize',
       submenu: [
         // { title: 'Principal', url: '/' },
-        { title: 'Stock', url: 'products', icon: 'storage' },
-        { title: 'Orders', url: 'oders', icon: 'event' },
-        { title: 'Ship Now', url: 'cart', icon: 'local_shipping' },
+        { title: 'Inventario', url: 'products', icon: 'storage' },
+        { title: 'Ordenes', url: 'oders', icon: 'event' },
+        { title: 'Facturacion', url: 'cart', icon: 'local_shipping' },
         // { title: 'Estadisticas', url: 'chart1' },
       ],
     },
