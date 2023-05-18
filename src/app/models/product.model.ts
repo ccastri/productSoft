@@ -9,6 +9,8 @@ export class Product {
     public disadvantage: string,
     public screenSize: string,
     public stockCode: string,
-    public id?: string
+    public id?: string,
+    public isSelected?: boolean,
+    public quantity?: number
   ) {}
 }

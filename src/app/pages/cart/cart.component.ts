@@ -11,6 +11,8 @@ import { ProductService } from 'src/app/services/product.service';
 import { take } from 'rxjs/operators';
 
 import Swal from 'sweetalert2';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { InvoiceService } from 'src/app/services/invoice.service';
 // private currencyPipe: CurrencyPipe,
 @Component({
   selector: 'app-cart',
@@ -25,6 +27,7 @@ export class CartComponent implements OnInit {
   amountToDecrease: number = 0; // Add this line to define the amountToAdd property
   // productForm!: FormGroup;
   selectedProduct: Product | undefined;
+  isSelected?: boolean;
 
   public formSubmitted = false;
   public productForm = this.fb.group({
@@ -35,7 +38,12 @@ export class CartComponent implements OnInit {
 
     stockCode: ['', Validators.required],
   });
-  constructor(public productService: ProductService, private fb: FormBuilder) {}
+  constructor(
+    public productService: ProductService,
+    private fb: FormBuilder,
+    private db: AngularFirestore,
+    private invoiceService: InvoiceService
+  ) {}
 
   ngOnInit(): void {
     // !Toma el primer
@@ -46,6 +54,19 @@ export class CartComponent implements OnInit {
         // console.log(products);
         this.products = products;
       });
+  }
+  addProductsToInvoice() {
+    const selectedProducts = this.invoiceService.getSelectedProducts(
+      this.products
+    );
+    // Perform any necessary actions with the selected products
+  }
+
+  getSelectedProductQuantity(productId: string): number {
+    return this.invoiceService.getSelectedProductQuantity(
+      this.products,
+      productId
+    );
   }
   loadSelectedProduct(productId: string) {
     this.productService.getProductById(productId).subscribe(
@@ -223,22 +244,4 @@ export class CartComponent implements OnInit {
       .fill(0)
       .map((x, i) => i + 1);
   }
-  // !TODO:
-  // !This is the next step Yesterday I was able to create a new product using this form
-  // ! I was working on it's  validations
-  // !But is pretty easy though
-
-  // onSubmit() {
-  //   if (this.productForm.invalid) {
-  //     // Handle form validation errors
-  //     return;
-  //   }
-
-  //   const formData = this.productForm.value;
-
-  //   this.createProduct(formData);
-
-  //   // Reset the form after submission
-  //   this.productForm.reset();
-  // }
 }
