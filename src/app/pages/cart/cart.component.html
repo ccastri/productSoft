@@ -53,22 +53,29 @@
               [(ngModel)]="product.isSelected"
             />
           </div>
-          <p
-            [ngClass]="{
-              'justify-self-center ': product.isSelected,
-              'justify-self-end ': !product.isSelected
-            }"
-            class="pt-3 border-2 flex w-16 justify-start border-black"
-          >
-            {{ product.make }}
-          </p>
-          <select *ngIf="product.isSelected" class="w-12 outline-none">
-            <option *ngFor="let num of getNumberArray(product.stockAmount)">
-              {{ num }}
-            </option>
-          </select>
+          <div class="flex flex-row">
+            <p
+              [ngClass]="{
+                'justify-self-center ': product.isSelected,
+                'justify-self-end ': !product.isSelected
+              }"
+              class="pt-3 border-2 flex w-16 justify-start border-black"
+            >
+              {{ product.make }}
+            </p>
+            <select
+              *ngIf="product.isSelected"
+              [(ngModel)]="product.quantity"
+              class="w-12 outline-none"
+            >
+              <option *ngFor="let num of getNumberArray(product.stockAmount)">
+                {{ num }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
+      <mat-icon fontSize="large" (click)="addProductsToInvoice()">add</mat-icon>
     </div>
 
     <div
@@ -202,49 +209,53 @@
         />
       </div>
     </div>
-    <table class="w-full flex flex-row border-2 border-slate-400">
-      <thead
-        class="flex flex-col border-2 border-slate-600 items-justify text-white"
-      >
-        <tr class="flex flex-col space-y-4">
-          <th class="border-y-2 bg-gray-500">Cod</th>
-          <th class="border-y-2 bg-gray-500">Nombre</th>
-          <th class="border-y-2 bg-gray-500">Valor unitario</th>
-          <th class="border-y-2 bg-gray-500">Cantidad</th>
-          <th class="border-y-2 bg-gray-500">Valor total</th>
-        </tr>
-      </thead>
-      <tbody class="flex flex-row text-center">
-        <tr
-          class="border-x text-white bg-blue-500 flex flex-col text-center w-full border-black justify-between"
-        >
-          <td class="border-y-2 bg-gray-500">001</td>
-          <td class="border-y-2 bg-gray-500">Mac Chip M1</td>
-          <td class="border-y-2 bg-gray-500">4700000</td>
-          <td class="border-y-2 bg-gray-500">1</td>
-          <td class="border-y-2 bg-gray-500">4700000</td>
-        </tr>
-        <tr class="flex w-full flex-col justify-between bg-blue-500 text-white">
-          <td class="border-y-2 bg-gray-500">066</td>
-          <td class="border-y-2 bg-gray-500">Allienware Ryzen</td>
-          <td class="border-y-2 bg-gray-500">4.0M</td>
-          <td class="border-y-2 bg-gray-500">5</td>
-          <td class="border-y-2 bg-gray-500">20M</td>
-        </tr>
-        <!-- <tr *ngFor="let item of items">
+    <div>
+      <table class="">
+        <thead class="">
+          <tr class="">
+            <th class="border-y-2 bg-gray-500">Cod</th>
+            <th class="border-y-2 bg-gray-500">Nombre</th>
+            <th class="border-y-2 bg-gray-500">Valor unitario</th>
+            <th class="border-y-2 bg-gray-500">Cantidad</th>
+            <th class="border-y-2 bg-gray-500">Valor total</th>
+          </tr>
+        </thead>
+        <tbody class="">
+          <tr class="">
+            <!-- <td class="border-y-2 bg-gray-500">{{currentInvoice.make}}</td>
+          <td class="border-y-2 bg-gray-500">{{product.model}}</td>
+          <td class="border-y-2 bg-gray-500">{{product.price}}</td>
+          <td class="border-y-2 bg-gray-500">{{product.quantity}}</td>
+          <td class="border-y-2 bg-gray-500">4700000</td> -->
+          </tr>
+
+          <div ng-container *ngIf="currentInvoice">
+            <div *ngFor="let item of currentInvoice.items">
+              <tr class="space-x-2">
+                <td class="border-y-2 bg-gray-500">{{ item.productId }}</td>
+                <td class="border-y-2 bg-gray-500">{{ item.price }}</td>
+                <td class="border-y-2 bg-gray-500">{{ item.quantity }}</td>
+                <!-- <td class="border-y-2 bg-gray-500">5</td>
+                <td class="border-y-2 bg-gray-500">20M</td> -->
+              </tr>
+            </div>
+          </div>
+
+          <!-- <tr *ngFor="let item of items">
           <td>{{ item.codigo }}</td>
           <td>{{ item.nombre }}</td>
           <td>{{ item.valorUnitario }}</td>
           <td>{{ item.cantidad }}</td>
           <td>{{ item.valorTotal }}</td>
         </tr> -->
-      </tbody>
-    </table>
-    <div
-      class="flex items-center space-x-2 justify-center bg-slate-800 border-black flex-row h-44"
-    >
-      <mat-icon fontSize="120px" color="blue">edit</mat-icon>
-      <mat-icon fontSize="large" color="primary">delete</mat-icon>
+        </tbody>
+      </table>
+      <div
+        class="flex items-center space-x-2 justify-center bg-slate-800 border-black flex-row h-44"
+      >
+        <mat-icon fontSize="120px" color="blue">edit</mat-icon>
+        <mat-icon fontSize="large" color="primary">delete</mat-icon>
+      </div>
     </div>
   </div>
 </div>

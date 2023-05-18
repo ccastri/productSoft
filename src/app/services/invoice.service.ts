@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { ProductService } from './product.service';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.model';
@@ -20,7 +20,7 @@ export interface Invoice {
   providedIn: 'root',
 })
 export class InvoiceService {
-  private currentInvoice: Invoice = { id: '', items: [], total: 0 };
+  public currentInvoice: Invoice = { id: '', items: [], total: 0 };
 
   constructor(private productService: ProductService) {}
 
@@ -30,6 +30,7 @@ export class InvoiceService {
     quantity: number
   ): Observable<void> {
     return this.productService.getProductById(productId).pipe(
+      take(1),
       map((product: Product | undefined) => {
         if (!product) {
           throw new Error(`Product with ID ${productId} not found`);
@@ -49,9 +50,9 @@ export class InvoiceService {
         this.currentInvoice.items.push(item);
         this.currentInvoice.total += itemPrice * quantity;
 
-        if (product.id) {
-          this.productService.decreaseStockAmount(product.id, quantity);
-        }
+        // if (product.id) {
+        //   this.productService.decreaseStockAmount(product.id, quantity);
+        // }
       })
     );
   }
