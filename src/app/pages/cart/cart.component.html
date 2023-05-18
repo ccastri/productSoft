@@ -5,6 +5,25 @@
         {{ product.make }}
       </option>
     </select>
+
+    <div class="flex w-full flex-col h-full py-4 bg-slate-200">
+      <div class="text-slate-700 flex flex-col">
+        <div
+          *ngFor="let product of products"
+          class="grid grid-cols-3 gap-2 space-y-2"
+        >
+          <div class="items-start flex pt-6">
+            <input type="checkbox" class="" name="isBought" id="" />
+          </div>
+          <p class="flex items-center pt-3">{{ product.make }}</p>
+          <select>
+            <option *ngFor="let num of getNumberArray(product.stockAmount)">
+              {{ num }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div

@@ -218,7 +218,11 @@ export class CartComponent implements OnInit {
       Swal.fire('Error', 'Failed to add product', 'error');
     }
   }
-
+  getNumberArray(stock: number): number[] {
+    return Array(stock)
+      .fill(0)
+      .map((x, i) => i + 1);
+  }
   // !TODO:
   // !This is the next step Yesterday I was able to create a new product using this form
   // ! I was working on it's  validations
