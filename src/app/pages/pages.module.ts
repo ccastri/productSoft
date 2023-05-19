@@ -15,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
 import { PagesComponent } from './pages.component';
 import { CartComponent } from './cart/cart.component';
 import { MaterialModule } from '../material.module';
+import { AuthGuard } from '../guards/auth.guard';
 // import { AssetPipe } from '../pipes/asset.pipes';
 
 @NgModule({
@@ -40,5 +41,6 @@ import { MaterialModule } from '../material.module';
     MatInputModule,
     MatNativeDateModule,
   ],
+  providers: [AuthGuard], // Add AuthGuard to the providers array
 })
 export class PagesModule {}

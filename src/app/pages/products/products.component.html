@@ -1,77 +1,87 @@
 <div class="flex flex-col p-8 w-full sm:whitespace-normal md:whitespace-nowrap">
   <!--!-------------------------- Products table--------------------------------- -->
   <!--!-------------------------- Products table--------------------------------- -->
-  <table>
-    <thead>
-      <tr class="text-slate-200 bg-gray-500">
-        <th class="border-x-2 border-t border-slate-200">Product Number</th>
-        <th class="border-x-2 border-t border-slate-200">Make</th>
-        <th class="border-x-2 border-t border-slate-200">Model</th>
-        <th class="border-x-2 border-t border-slate-200">Description</th>
-        <th class="border-x-2 border-t border-slate-200">Price</th>
-        <th class="border-x-2 border-t border-slate-200">Stock Amount</th>
-        <th class="border-x-2 border-t border-slate-200">OS</th>
-        <th class="border-x-2 border-t border-slate-200">Disadvantage</th>
-        <th class="border-x-2 border-t border-slate-200">Screen Size</th>
-        <th class="border-x-2 border-t border-slate-200">Stock Code</th>
-        <th class="border-x-2 border-t border-slate-200">Editar stock</th>
-      </tr>
-    </thead>
-    <tbody class="h-full">
-      <tr
-        *ngFor="let product of products; let i = index"
-        class="text-center text-slate-700 bg-slate-200 w-full"
-      >
-        <td class="border-2 border-slate-300">{{ i + 1 }}</td>
-        <td class="border-2 border-slate-300">{{ product.make }}</td>
-        <td class="border-2 border-slate-300">{{ product.model }}</td>
-        <td class="border-2 border-slate-300">{{ product.description }}</td>
-        <td class="border-2 border-slate-300">
-          {{ product.price }}
-        </td>
-        <td class="border-2 border-slate-300">{{ product.stockAmount }}</td>
-        <td class="border-2 border-slate-300">{{ product.OS }}</td>
-        <td class="border-2 border-slate-300">{{ product.disadvantage }}</td>
-        <td class="border-2 border-slate-300">{{ product.screenSize }}</td>
-        <td class="border-2 border-slate-300">{{ product.stockCode }}</td>
-        <div
-          class="flex border-y border-slate-300 space-x-8 items-end px-2 w-full h-full"
+  <div>
+    <table>
+      <thead>
+        <tr class="text-slate-200 bg-gray-500">
+          <th class="border-x-2 border-t border-slate-200">Product Number</th>
+          <th class="border-x-2 border-t border-slate-200">Make</th>
+          <th class="border-x-2 border-t border-slate-200">Model</th>
+          <th class="border-x-2 border-t border-slate-200">Description</th>
+          <th class="border-x-2 border-t border-slate-200">Price</th>
+          <th class="border-x-2 border-t border-slate-200">Stock Amount</th>
+          <th class="border-x-2 border-t border-slate-200">OS</th>
+          <th class="border-x-2 border-t border-slate-200">Disadvantage</th>
+          <th class="border-x-2 border-t border-slate-200">Screen Size</th>
+          <th class="border-x-2 border-t border-slate-200">Stock Code</th>
+          <th class="border-x-2 border-t border-slate-200">Editar stock</th>
+        </tr>
+      </thead>
+      <tbody class="h-full">
+        <tr
+          *ngFor="let product of products; let i = index"
+          class="text-center text-slate-700 bg-slate-200 w-full"
         >
-          <!-- !-------------------Aditional row for inventory controllers -------------------------! -->
-          <!-- !-------------------Aditional row for inventory controllers -------------------------! -->
-          <div class="flex flex-col justify-between items-center py-4">
-            <mat-form-field class="w-16">
-              <input
-                matInput
-                type="number"
-                [(ngModel)]="amountToAdd"
-                placeholder="Amount"
-              />
-            </mat-form-field>
-            <mat-icon (click)="addProduct(product.id ?? '', amountToAdd ?? 0)"
-              >add</mat-icon
+          <td class="border-2 border-slate-300">{{ i + 1 }}</td>
+          <td class="border-2 border-slate-300">{{ product.make }}</td>
+          <td class="border-2 border-slate-300">{{ product.model }}</td>
+          <td class="border-2 border-slate-300">{{ product.description }}</td>
+          <td class="border-2 border-slate-300">
+            {{ product.price }}
+          </td>
+          <td class="border-2 border-slate-300">{{ product.stockAmount }}</td>
+          <td class="border-2 border-slate-300">{{ product.OS }}</td>
+          <td class="border-2 border-slate-300">{{ product.disadvantage }}</td>
+          <td class="border-2 border-slate-300">{{ product.screenSize }}</td>
+          <td class="border-2 border-slate-300">{{ product.stockCode }}</td>
+          <div
+            class="flex border-y border-slate-300 space-x-8 items-end px-2 w-full h-full"
+          >
+            <!-- !-------------------Aditional row for inventory controllers -------------------------! -->
+            <!-- !-------------------Aditional row for inventory controllers -------------------------! -->
+            <div class="flex flex-col justify-between items-center py-4">
+              <mat-form-field class="w-16">
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="product.amountToAdd"
+                  placeholder="0"
+                />
+              </mat-form-field>
+              <mat-icon
+                (click)="addProduct(product.id ?? '', product.amountToAdd ?? 0)"
+                >add</mat-icon
+              >
+            </div>
+            <div
+              class="w-[50%] flex flex-col justify-between items-center py-4"
             >
+              <mat-form-field class="w-16 flex">
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="product.amountToDecrease"
+                  placeholder="0"
+                />
+              </mat-form-field>
+              <!-- (click)="removeProduct(product.id ?? '', amountToAdd ?? 0)" -->
+              <mat-icon
+                (click)="
+                  decreaseProduct(
+                    product.id ?? '',
+                    product.amountToDecrease ?? 0
+                  )
+                "
+                >remove</mat-icon
+              >
+            </div>
+            <!-- <mat-icon>remove</mat-icon> -->
           </div>
-          <div class="w-[50%] flex flex-col justify-between items-center py-4">
-            <mat-form-field class="w-16 flex">
-              <input
-                matInput
-                type="number"
-                [(ngModel)]="amountToDecrease"
-                placeholder="Amount"
-              />
-            </mat-form-field>
-            <!-- (click)="removeProduct(product.id ?? '', amountToAdd ?? 0)" -->
-            <mat-icon
-              (click)="decreaseProduct(product.id ?? '', amountToDecrease ?? 0)"
-              >remove</mat-icon
-            >
-          </div>
-          <!-- <mat-icon>remove</mat-icon> -->
-        </div>
-      </tr>
-    </tbody>
-  </table>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div class="flex items-center w-full justify-center space-y-4 px-3 py-2">
     <!-- !Button to hide/show the form to add new products -->
     <!-- !Button to hide/show the form to add new products -->

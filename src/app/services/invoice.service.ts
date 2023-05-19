@@ -55,9 +55,9 @@ export class InvoiceService {
         this.currentInvoice.items.push(item);
         this.currentInvoice.total += itemPrice * quantity;
         this.updateInvoice(this.currentInvoice);
-        // if (product.id) {
-        //   this.productService.decreaseStockAmount(product.id, quantity);
-        // }
+        if (product.id) {
+          this.productService.decreaseStockAmount(product.id, quantity);
+        }
       })
     );
   }

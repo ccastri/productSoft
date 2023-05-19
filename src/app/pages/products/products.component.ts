@@ -54,15 +54,6 @@ export class ProductsComponent implements OnInit {
       (product) => {
         if (product) {
           this.selectedProduct = product;
-
-          if (this.selectedProduct.stockAmount <= 10) {
-            // console.log('aqui toy');
-            Swal.fire(
-              'Alert',
-              'No hay suficientes unidades disponibles',
-              'warning'
-            );
-          }
         } else {
           console.error(`Producto con id ${productId} no encontradp`);
         }
@@ -166,6 +157,10 @@ export class ProductsComponent implements OnInit {
 
     if (!selectedProduct) {
       console.error('Producto seleccionado no fue encontrado');
+      return;
+    }
+    if (selectedProduct.stockAmount <= 10) {
+      Swal.fire('Alert', 'No hay suficientes unidades disponibles', 'warning');
       return;
     }
 

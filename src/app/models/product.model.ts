@@ -11,6 +11,8 @@ export class Product {
     public stockCode: string,
     public id?: string,
     public isSelected?: boolean,
-    public quantity?: number
+    public quantity?: number,
+    public amountToAdd?: number,
+    public amountToDecrease?: number
   ) {}
 }

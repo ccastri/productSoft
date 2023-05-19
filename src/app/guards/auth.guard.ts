@@ -1,54 +1,69 @@
-// import { Injectable } from '@angular/core';
-// import {
-//   ActivatedRouteSnapshot,
-//   CanActivateChild,
-//   CanLoad,
-//   Route,
-//   Router,
-//   RouterStateSnapshot,
-//   UrlSegment,
-//   UrlTree,
-// } from '@angular/router';
-// import { Observable, tap } from 'rxjs';
-// import { UserService } from '../services/user.service';
+import { Injectable } from '@angular/core';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+  Router,
+  Route,
+  UrlSegment,
+} from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class AuthGuard implements CanActivateChild, CanLoad {
-//   constructor(private userService: UserService, private router: Router) {}
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+  constructor(private router: Router, private afAuth: AngularFireAuth) {}
 
-//   canLoad(
-//     route: Route,
-//     segments: UrlSegment[]
-//   ):
-//     | Observable<boolean | UrlTree>
-//     | Promise<boolean | UrlTree>
-//     | boolean
-//     | UrlTree {
-//     return this.userService.isLoggedIn().pipe(
-//       tap((isLoggedIn) => {
-//         if (!isLoggedIn) {
-//           this.router.navigate(['/login']);
-//         }
-//       })
-//     );
-//   }
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    return this.afAuth.authState.pipe(
+      take(1),
+      map((user) => {
+        // For simulating there's no user you can do if (user !== null)
+        if (user) {
+          console.log(user);
+          // El usuario está autenticado, permitir el acceso a la ruta
+          return true;
+        } else {
+          // El usuario no está autenticado, redirigir a la página de inicio de sesión
+          return this.router.createUrlTree(['/login']);
+        }
+      })
+    );
+  }
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    return this.checkUserAuthentication();
+  }
 
-//   canActivateChild(
-//     childRoute: ActivatedRouteSnapshot,
-//     state: RouterStateSnapshot
-//   ):
-//     | Observable<boolean | UrlTree>
-//     | Promise<boolean | UrlTree>
-//     | boolean
-//     | UrlTree {
-//     return this.userService.isLoggedIn().pipe(
-//       tap((isLoggedIn) => {
-//         if (!isLoggedIn) {
-//           this.router.navigate(['/login']);
-//         }
-//       })
-//     );
-//   }
-// }
+  private checkUserAuthentication(): Observable<boolean | UrlTree> {
+    return this.afAuth.authState.pipe(
+      take(1),
+      map((user) => {
+        if (user !== null) {
+          // User is authenticated, allow access
+          return true;
+        } else {
+          // User is not authenticated, redirect to the login page
+          return this.router.createUrlTree(['/login']);
+        }
+      })
+    );
+  }
+}
