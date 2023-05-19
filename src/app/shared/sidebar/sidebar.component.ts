@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
   styles: [],
 })
 export class SidebarComponent implements OnInit {
+  public isMenuOpen: boolean = false;
   // public user: User;
 
   constructor(
@@ -45,6 +46,11 @@ export class SidebarComponent implements OnInit {
   //   }
   // }
   //!  cierre de sesion
+
+  toggleMenu(): void {
+    console.log(this.isMenuOpen);
+    this.isMenuOpen = !this.isMenuOpen;
+  }
   logout() {
     Swal.fire({
       title: '¿Está seguro que desea cerrar sesión?',

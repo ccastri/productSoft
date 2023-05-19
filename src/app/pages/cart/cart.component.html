@@ -26,7 +26,7 @@
     </div>
   </div> -->
     <div class="flex w-full flex-col h-full py-4 bg-slate-200">
-      <div class="text-slate-700 flex flex-col bg-slate-500">
+      <div class="text-slate-200 flex flex-col bg-slate-500">
         <div class="grid grid-cols-2 gap-6">
           <p class="ml-4 w-24">Productos a facturar</p>
           <p>Nombre</p>
@@ -66,7 +66,7 @@
             <select
               *ngIf="product.isSelected"
               [(ngModel)]="product.quantity"
-              class="w-12 outline-none"
+              class="w-12 outline-none text-slate-700"
             >
               <option *ngFor="let num of getNumberArray(product.stockAmount)">
                 {{ num }}
@@ -79,12 +79,19 @@
     </div>
 
     <div
+      *ngIf="currentInvoice"
       class="py-4 justify-between px-4 flex flex-row w-full text-slate-200 bg-gray-500 space-x-2"
       pt-2
     >
       <p class="w-24">Factura No.</p>
-      <p class="bg-slate-300 rounded-md w-12 text-center h-6">AI</p>
-      <p class="bg-slate-300 rounded-md text-center h-6 w-28">00000003400</p>
+      <p class="bg-slate-300 rounded-md w-12 text-center text-slate-700 h-6">
+        AI
+      </p>
+      <input
+        class="text-slate-700 bg-slate-300 rounded-md text-center h-6 w-28"
+        placeholder="00000003400"
+        [(ngModel)]="currentInvoice.id"
+      />
     </div>
     <div
       class="flex p-4 flex-col h-28 justify-center bg-slate-800 text-slate-200 items-start w-full"
@@ -210,8 +217,8 @@
       </div>
     </div>
     <div>
-      <table class="">
-        <thead class="">
+      <!-- <table class=""> -->
+      <!-- <thead class="">
           <tr class="">
             <th class="border-y-2 bg-gray-500">Cod</th>
             <th class="border-y-2 bg-gray-500">Nombre</th>
@@ -219,42 +226,68 @@
             <th class="border-y-2 bg-gray-500">Cantidad</th>
             <th class="border-y-2 bg-gray-500">Valor total</th>
           </tr>
-        </thead>
-        <tbody class="">
-          <tr class="">
-            <!-- <td class="border-y-2 bg-gray-500">{{currentInvoice.make}}</td>
-          <td class="border-y-2 bg-gray-500">{{product.model}}</td>
+        </thead> -->
+      <!-- <tbody class="">
+          <tr class=""> -->
+      <!-- <td class="border-y-2 bg-gray-500">{{currentInvoice.make}}</td>
+        <td class="border-y-2 bg-gray-500">{{product.model}}</td>
           <td class="border-y-2 bg-gray-500">{{product.price}}</td>
           <td class="border-y-2 bg-gray-500">{{product.quantity}}</td>
           <td class="border-y-2 bg-gray-500">4700000</td> -->
-          </tr>
+      <!-- </tr> -->
 
-          <div ng-container *ngIf="currentInvoice">
-            <div *ngFor="let item of currentInvoice.items">
-              <tr class="space-x-2">
-                <td class="border-y-2 bg-gray-500">{{ item.productId }}</td>
-                <td class="border-y-2 bg-gray-500">{{ item.price }}</td>
-                <td class="border-y-2 bg-gray-500">{{ item.quantity }}</td>
-                <!-- <td class="border-y-2 bg-gray-500">5</td>
-                <td class="border-y-2 bg-gray-500">20M</td> -->
-              </tr>
-            </div>
-          </div>
+      <div *ngIf="currentInvoice" class="m-4 border-2 border-slate-700">
+        <h2 class="border-b-2 border-slate-700 font-bold">
+          Detalles de Factura
+        </h2>
+        <p>Numero De Factura: {{ currentInvoice.id }}</p>
 
-          <!-- <tr *ngFor="let item of items">
-          <td>{{ item.codigo }}</td>
-          <td>{{ item.nombre }}</td>
-          <td>{{ item.valorUnitario }}</td>
-          <td>{{ item.cantidad }}</td>
-          <td>{{ item.valorTotal }}</td>
+        <table class="w-full border-y-2 border-black">
+          <thead>
+            <tr class="">
+              <!-- <th>Product ID</th> -->
+              <th>Cantidad</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Precio</th>
+              <th>Borrar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="w-full border-y-2 border-black space-x-4"
+              *ngFor="let item of currentInvoice.items; let i = index"
+            >
+              <!-- <td>{{ item.productId }}</td> -->
+              <td class="mx-auto text-center">{{ item.quantity }}</td>
+              <td class="mx-auto text-center">{{ item.make }}</td>
+              <td class="mx-auto text-center">{{ item.model }}</td>
+              <td class="mx-auto text-center">{{ item.price }}</td>
+              <mat-icon
+                fontSize="large"
+                (click)="removeFromInvoice(i)"
+                color="primary"
+                >delete</mat-icon
+              >
+            </tr>
+          </tbody>
+        </table>
+        <p>Total: {{ currentInvoice.total }}</p>
+      </div>
+
+      <!-- <tr *ngFor="let item of items">
+        <td>{{ item.codigo }}</td>
+        <td>{{ item.nombre }}</td>
+        <td>{{ item.valorUnitario }}</td>
+        <td>{{ item.cantidad }}</td>
+        <td>{{ item.valorTotal }}</td>
         </tr> -->
-        </tbody>
-      </table>
+      <!-- </tbody>
+      </table> -->
       <div
         class="flex items-center space-x-2 justify-center bg-slate-800 border-black flex-row h-44"
       >
         <mat-icon fontSize="120px" color="blue">edit</mat-icon>
-        <mat-icon fontSize="large" color="primary">delete</mat-icon>
       </div>
     </div>
   </div>

@@ -1,19 +1,30 @@
 <!-- Left Sidebar - style you can find in sidebar.scss  -->
 <!-- ============================================================== -->
-<aside class="flex flex-col w-full h-full bg-gray-500">
+<aside
+  [ngClass]="{ '': !isMenuOpen, 'translate-x-8': isMenuOpen }"
+  class="flex flex-col w-full transition duration-200 transform h-full bg-gray-500"
+>
   <!-- Sidebar scroll-->
   <div
-    class="w-full items-center text-white justify-between flex px-4 pt-4 mb-4"
+    [ngClass]="{ 'justify-end': !isMenuOpen, 'justify-between': isMenuOpen }"
+    class="w-full flex-row border- text-white flex px-4 pt-4 mb-4"
   >
-    <img [src]="'assets/logo.jpg'" class="rounded-md hidden md:flex h-12" />
+    <img
+      [src]="'assets/logo.jpg'"
+      class="rounded-md hidden md:flex border- h-12"
+    />
     <mat-icon
       fontSize="large"
-      class="w-full flex transition-all"
+      class="w-full flex border- items-end justify-end"
       color="primary"
+      (click)="toggleMenu()"
       >menu</mat-icon
     >
   </div>
-  <div class="bg-gray-500 h-screen text-center text-slate-200">
+  <div
+    [ngClass]="{ hidden: !isMenuOpen, '': isMenuOpen }"
+    class="bg-gray-500 h-screen text-center text-slate-200"
+  >
     <!-- Sidebar navigation-->
     <nav class="">
       <ul id="sidebarnav">
@@ -42,28 +53,24 @@
         <h1 class="px-2 font-bold text-xl mb-2 py-3">MENU</h1>
         <li
           *ngFor="let item of sidebarService.menu"
-          class="mx-3 hover:bg-slate-400 transition duration-200 transform ease-in-out hover:scale-105"
+          class="mx-3 border- hover:bg-slate-400 transition duration-200 transform ease-in-out hover:scale-105 py-4 space-y-4"
         >
-          <!-- <div class="bg-slate-400 w-full"> -->
           <a
-            class="py-3"
             href="/dashboard"
             aria-expanded="false"
-            class="space-x-2 flex hover:mb-4 hover:bg-slate-500 transition duration-200 transform ease-in-out hover:scale-105 hover:text-md hover:font-bold font-semibold w-full px-4 py-1"
+            class="border- items-center justify-center w-full flex flex-row hover:mb-4 hover:bg-slate-500 transition duration-200 transform ease-in-out hover:scale-105 hover:text-md hover:font-bold font-semibold py-1"
           >
             <mat-icon fontSize="large" color="primary">{{
               item.icon
             }}</mat-icon>
-            <!-- <i [class]="item.icon"></i
-            > -->
-            <span class="w-full">
+            <span class="w-auto space-x-8 h-6 border-2">
               {{ item.title }}
               <span
-                class="bg-slate-200 w-6 items-end rounded-sm text-red-500 flex justify-center text-center"
+                class="bg-slate-200 items-center mx-4 px-2 w-4 rounded-sm text-red-500"
                 >{{ item.submenu.length }}
               </span></span
-            ></a
-          >
+            >
+          </a>
           <!-- </div> -->
           <ul
             aria-expanded="false"
@@ -71,15 +78,15 @@
           >
             <li
               *ngFor="let subMenuItem of item.submenu"
-              class="hover:bg-slate-300 hover:text-white"
+              class="hover:bg-slate-300 space-y-2 hover:text-white"
             >
               <a
-                class="flex items-center px-2 w-full transition duration-200 transform ease-in-out hover:scale-105 hover:text-bold hover:text-md hover:text-slate-500 hover:bg-slate-200 font-semibold space-x-8"
+                class="flex items-center px-2 w-full space-y-2 transition duration-200 transform ease-in-out hover:scale-105 hover:text-bold hover:text-md hover:text-slate-500 hover:bg-slate-200 font-semibold space-x-8"
                 [routerLink]="subMenuItem.url"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
               >
-                <span class="flex w-12 h-8 items-center pr-4 pl-2"
+                <span class="flex w-12 h-8 items-center space-y-2 pr-4 pl-2"
                   ><mat-icon
                     fontSize="60px"
                     color="primary"
@@ -95,7 +102,7 @@
     </nav>
     <!-- End Sidebar navigation -->
     <div
-      class="justify-center items-center transition duration-200 transform ease-in-out hover:scale-105 hover:bg-slate-300 hover:text-white"
+      class="justify-center mt-44 items-center transition duration-200 transform ease-in-out hover:scale-105 hover:bg-slate-300 hover:text-white"
     >
       <a
         class="flex items-center transition duration-200 transform ease-in-out hover:scale-105 font-semibold text-md w-full hover:bg-slate-500 hover:text-white hover:text-bold hover:text-xl"

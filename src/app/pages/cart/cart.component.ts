@@ -54,6 +54,12 @@ export class CartComponent implements OnInit {
         // console.log(products);
         this.products = products;
       });
+    this.currentInvoice = this.invoiceService.currentInvoice;
+    if (!this.currentInvoice) {
+      // Load the currentInvoice from localStorage if it's not already set
+      this.invoiceService.loadInvoiceFromLocalStorage();
+      this.currentInvoice = this.invoiceService.currentInvoice;
+    }
   }
   addProductsToInvoice() {
     const selectedProducts = this.invoiceService.getSelectedProducts(
@@ -93,5 +99,13 @@ export class CartComponent implements OnInit {
     return Array(stock)
       .fill(0)
       .map((x, i) => i + 1);
+  }
+
+  removeFromInvoice(index: number): void {
+    if (this.currentInvoice) {
+      this.currentInvoice.items.splice(index, 1);
+      // this.currentInvoice.total = this.calculateTotal();
+      this.invoiceService.updateInvoice(this.currentInvoice);
+    }
   }
 }
