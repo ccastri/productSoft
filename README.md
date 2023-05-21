@@ -1,5 +1,5 @@
 # LaptopsInventory
-##Resumen
+## Resumen
 This demo has been created in regards of a technical interview as a frontend developer
 
 It's main purpose is to demonstrate basic understanding of angular as a JavaScript framework for apps development.
