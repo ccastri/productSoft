@@ -45,8 +45,8 @@ Services: el servicio de productos para manejar la logica de la data del inventa
 - https://productsoft-52eb0.web.app/dasboard/orders
 - https://productsoft-52eb0.web.app//dashboard/cart
 
-**Se esta trabajando en el modal de confirmación y subida de imagenes para fotos de perfil y/o de los productos
-**Además un filtro de busqueda para el inventario y la futura coleccion de facturas
+** Se esta trabajando en el modal de confirmación y subida de imagenes para fotos de perfil y/o de los productos
+** Además un filtro de busqueda para el inventario y la futura coleccion de facturas
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.1.
 
