@@ -6,7 +6,7 @@
     class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg p-4 rounded-lg border-2 hover:bg-slate-600 transition duration-200 transform ease-in-out hover:scale-105 w-auto items-center justify-center flex py-18 px-20 flex-col border-slate-300"
   >
     <h2 class="text-2xl py-4 font-bold">Productos Geek</h2>
-    <img [src]="'assets/logo.jpg'" class="rounded-md h-24" />
+    <img [src]="'logo.jpg' | asset" class="rounded-md h-24" />
     <span class="font-bold text-xl">Inicio de Sesion</span>
     <form
       className=" flex flex-row w-72 items-center justify-center sm:w-full  mx-auto  "
@@ -50,3 +50,4 @@
     </a>
   </div>
 </div>
+<!-- <app-spinner *ngIf="isLoading"></app-spinner> -->

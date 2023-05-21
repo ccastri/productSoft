@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { PipesModule } from '../pipes/pipes.module';
+// import { LoaderComponent } from '../components/loader/loader.component';y
 
 const AUTH_COMPONENT = [LoginComponent, RegisterComponent];
 
@@ -18,6 +20,7 @@ const AUTH_COMPONENT = [LoginComponent, RegisterComponent];
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    PipesModule,
   ],
 })
 export class AuthModule {}

@@ -9,7 +9,7 @@ import { UserService } from './services/user.service';
 export class AppComponent {
   isAuth = false;
   title = 'laptops inventory';
-
+  // ***************![[]]
   constructor(private userService: UserService) {
     this.userService.isAuth.subscribe((value) => {
       this.isAuth = value;

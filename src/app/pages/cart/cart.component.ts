@@ -8,11 +8,15 @@ import {
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
+
 import { take } from 'rxjs/operators';
 
 import Swal from 'sweetalert2';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Invoice, InvoiceService } from 'src/app/services/invoice.service';
+import { ModalFormComponent } from 'src/app/components/modal-form/modal-form.component';
+import { CurrencyFormatPipe } from 'src/app/pipes/cuurency.pipe';
+
 // private currencyPipe: CurrencyPipe,
 @Component({
   selector: 'app-cart',
@@ -22,7 +26,7 @@ import { Invoice, InvoiceService } from 'src/app/services/invoice.service';
 export class CartComponent implements OnInit {
   products: Product[] = [];
   isLoading = true;
-  isOpen = false;
+  isModalOpen = false;
   amountToAdd: number = 0; // Add this line to define the amountToAdd property
   amountToDecrease: number = 0; // Add this line to define the amountToAdd property
   // productForm!: FormGroup;
@@ -42,16 +46,20 @@ export class CartComponent implements OnInit {
     public productService: ProductService,
     private fb: FormBuilder,
     private db: AngularFirestore,
-    private invoiceService: InvoiceService
+    public invoiceService: InvoiceService
   ) {}
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
     // !Toma el primer
     this.productService
       .getProducts()
       .pipe(take(1))
       .subscribe((products) => {
         // console.log(products);
+
         this.products = products;
       });
     this.currentInvoice = this.invoiceService.currentInvoice;
@@ -61,6 +69,9 @@ export class CartComponent implements OnInit {
       this.currentInvoice = this.invoiceService.currentInvoice;
     }
   }
+  // ************** !Aqui se ejecuta el proceso para añadir los productos:¡**************//
+  // 1. se define una constante que almacene arreglo de los productos seleccionados: selectedProducts
+  // 2. para cada producto seleccionado se añade a la factura
   addProductsToInvoice() {
     const selectedProducts = this.invoiceService.getSelectedProducts(
       this.products
@@ -75,6 +86,9 @@ export class CartComponent implements OnInit {
               // Success handling, if needed
               this.currentInvoice = this.invoiceService.currentInvoice;
               console.log(this.currentInvoice);
+              // this.removeFromInvoice;
+              // this.invoiceService.clearInvoiceFromLocalStorage
+              this.toggleModal();
               console.log('ok product has been added ');
             },
             (error) => {
@@ -106,6 +120,25 @@ export class CartComponent implements OnInit {
       this.currentInvoice.items.splice(index, 1);
       // this.currentInvoice.total = this.calculateTotal();
       this.invoiceService.updateInvoice(this.currentInvoice);
+      this.toggleModal();
     }
+  }
+  clearInvoice(): void {
+    if (this.currentInvoice) {
+      this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Remove all items from the items array
+      // this.currentInvoice.total = this.calculateTotal();
+      this.invoiceService.updateInvoice(this.currentInvoice);
+      this.invoiceService.clearInvoiceFromLocalStorage();
+      this.isModalOpen = false;
+      this.currentInvoice.items = [];
+    }
+  }
+
+  toggleModal() {
+    const selectedProducts = this.invoiceService.getSelectedProducts(
+      this.products
+    );
+    this.isModalOpen = !this.isModalOpen;
+    // this.currentInvoice;
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MaterialModule } from 'src/app/material.module';
 import { User } from 'src/app/models/user.model';
-import { AssetPipe } from '../../pipes/asset.pipes';
+import { AssetPipe } from '../../pipes/asset.pipe';
 
 import { SidebarService } from 'src/app/services/sidebar.service';
 

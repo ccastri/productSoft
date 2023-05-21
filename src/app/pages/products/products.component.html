@@ -1,3 +1,6 @@
+<div *ngIf="isLoading" class="w-full border-2 border-black">
+  <app-loader></app-loader>
+</div>
 <div class="flex flex-col p-8 w-full sm:whitespace-normal md:whitespace-nowrap">
   <!--!-------------------------- Products table--------------------------------- -->
   <!--!-------------------------- Products table--------------------------------- -->
@@ -18,7 +21,7 @@
           <th class="border-x-2 border-t border-slate-200">Editar stock</th>
         </tr>
       </thead>
-      <tbody class="h-full">
+      <tbody class="h-full" *ngIf="!isLoading">
         <tr
           *ngFor="let product of products; let i = index"
           class="text-center text-slate-700 bg-slate-200 w-full"
@@ -28,45 +31,29 @@
           <td class="border-2 border-slate-300">{{ product.model }}</td>
           <td class="border-2 border-slate-300">{{ product.description }}</td>
           <td class="border-2 border-slate-300">
-            {{ product.price }}
+            {{ product.price | currencyFormat }}
           </td>
           <td class="border-2 border-slate-300">{{ product.stockAmount }}</td>
           <td class="border-2 border-slate-300">{{ product.OS }}</td>
           <td class="border-2 border-slate-300">{{ product.disadvantage }}</td>
           <td class="border-2 border-slate-300">{{ product.screenSize }}</td>
           <td class="border-2 border-slate-300">{{ product.stockCode }}</td>
-          <div
-            class="flex border-y border-slate-300 space-x-8 items-end px-2 w-full h-full"
-          >
+          <div class="flex border-y border-slate-300 items-start w-full h-full">
             <!-- !-------------------Aditional row for inventory controllers -------------------------! -->
             <!-- !-------------------Aditional row for inventory controllers -------------------------! -->
-            <div class="flex flex-col justify-between items-center py-4">
-              <mat-form-field class="w-16">
+            <div class="w-full flex flex-col justify-between items-center py-4">
+              <mat-form-field class="w-10 flex">
                 <input
                   matInput
-                  type="number"
-                  [(ngModel)]="product.amountToAdd"
-                  placeholder="0"
-                />
-              </mat-form-field>
-              <mat-icon
-                (click)="addProduct(product.id ?? '', product.amountToAdd ?? 0)"
-                >add</mat-icon
-              >
-            </div>
-            <div
-              class="w-[50%] flex flex-col justify-between items-center py-4"
-            >
-              <mat-form-field class="w-16 flex">
-                <input
-                  matInput
-                  type="number"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
                   [(ngModel)]="product.amountToDecrease"
                   placeholder="0"
                 />
               </mat-form-field>
               <!-- (click)="removeProduct(product.id ?? '', amountToAdd ?? 0)" -->
               <mat-icon
+                class="transition transform ease-in-out hover:scale-150 duration-200"
                 (click)="
                   decreaseProduct(
                     product.id ?? '',
@@ -77,6 +64,22 @@
               >
             </div>
             <!-- <mat-icon>remove</mat-icon> -->
+            <div class="flex flex-col justify-between w-full items-center py-4">
+              <mat-form-field class="w-10">
+                <input
+                  matInput
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  [(ngModel)]="product.amountToAdd"
+                  placeholder="0"
+                />
+              </mat-form-field>
+              <mat-icon
+                class="transition transform ease-in-out hover:scale-150 duration-200"
+                (click)="addProduct(product.id ?? '', product.amountToAdd ?? 0)"
+                >add</mat-icon
+              >
+            </div>
           </div>
         </tr>
       </tbody>
@@ -92,13 +95,13 @@
       New
     </button>
   </div>
+  <!--!------------------------------------------ Form to add new peoducts---------------------! -->
+  <!--!------------------------------------------ Form to add new peoducts---------------------! -->
   <div
     class=""
     *ngIf="isOpen"
     class="flex flex-col p-8 w-full bg-slate-300 justify-center"
   >
-    <!--!------------------------------------------ Form to add new peoducts---------------------! -->
-    <!--!------------------------------------------ Form to add new peoducts---------------------! -->
     <form
       [formGroup]="productForm"
       (ngSubmit)="createProduct()"

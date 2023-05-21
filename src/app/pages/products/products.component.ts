@@ -47,6 +47,7 @@ export class ProductsComponent implements OnInit {
       .subscribe((products) => {
         // console.log(products);
         this.products = products;
+        this.isLoading = false;
       });
   }
   loadSelectedProduct(productId: string) {
@@ -114,7 +115,7 @@ export class ProductsComponent implements OnInit {
     // !------------------------------------------------------------------------------------------!
 
     try {
-      this.selectedProduct.stockAmount += amount;
+      this.selectedProduct.stockAmount += +amount;
 
       const updatedProducts = this.products
         .map((product) => {

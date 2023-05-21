@@ -1,63 +1,36 @@
-<!-- class="modal-image-bg hidden animated fadeIn fast" -->
-<div
-  class="border-2 border-slate-300"
-  [class.hidden]="modalImageService.hideModal"
->
-  <div
-    class="border-2 border-slate-300"
-    id="exampleModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel1"
-    style="display: block"
-  >
-    <div class="text-2xl" role="document">
-      <div class="text-2xl">
-        <div class="text-xl">
-          <h4 class="text-md" id="exampleModalLabel1">Upload your image</h4>
-          <button
-            type="button"
-            class="border-2 border-slate-300"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="border-2 border-slate-300">
-          <h3>Select new image</h3>
-          <div class="text-center border-2 border-slate-300">
-            <img
-              *ngIf="!imgTemp"
-              [src]="modalImageService.img"
-              class="img-avatar"
-              alt=""
-            />
-            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" alt="" />
-          </div>
-          <input
-            type="file"
-            (change)="changeImage($any($event.target).files[0])"
-          />
-        </div>
-        <div class="border-2 border-slate-300">
-          <button
-            type="button"
-            class="border-2 border-slate-300"
-            data-dismiss="modal"
-            (click)="closeModal()"
-          >
-            Close
-          </button>
-          <button
-            type="button"
-            class="border-2 border-slate-300"
-            (click)="uploadImg()"
-          >
-            Upload image
-          </button>
-        </div>
-      </div>
-    </div>
+<div class="w-auto border- border-black flex items-center justify-center">
+  <div class="modal-content">
+    <h2>Invoice</h2>
+    <table>
+      <thead>
+        <tr>
+          <th class="">Product</th>
+          <th class="pr-4">Quantity</th>
+          <th class="pr-4">Price</th>
+          <th class="pr-4">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="w-full border-y-2 border-black space-x-4"
+          *ngFor="let item of currentInvoice?.items; let i = index"
+        >
+          <!-- <td>{{ item.productId }}</td> -->
+          <td class="mx-auto text-center">{{ item.quantity }}</td>
+          <td class="mx-auto text-center">{{ item.make }}</td>
+          <td class="mx-auto text-center">{{ item.model }}</td>
+          <td class="mx-auto text-center">
+            {{ item.price | currencyFormat }}
+          </td>
+          <!-- <mat-icon fontSize="large" color="primary">delete</mat-icon> -->
+          <!-- (click)="removeFromInvoice(i)" -->
+        </tr>
+      </tbody>
+    </table>
+    <p>Subtotal: {{ currentInvoice?.subtotal ?? 0 | currencyFormat }}</p>
+    <p>Iva: 19%</p>
+    <p class="font-bold">
+      Total: {{ (currentInvoice?.subtotal ?? 0) * 0.19 | currencyFormat }}
+    </p>
   </div>
 </div>

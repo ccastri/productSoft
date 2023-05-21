@@ -13,16 +13,22 @@ export interface InvoiceItem {
 }
 
 export interface Invoice {
+  fecha?: string;
   id?: string;
+  cliente?: string;
+  direccion?: string;
+  email?: string;
   items: InvoiceItem[];
-  total: number;
+  subtotal: number;
+  descuento?: string;
+  moneda?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceService {
-  public currentInvoice: Invoice = { id: '', items: [], total: 0 };
+  public currentInvoice: Invoice = { id: '', items: [], subtotal: 0 };
   private localStorageKey = 'currentInvoice';
   constructor(private productService: ProductService) {
     this.loadInvoiceFromLocalStorage();
@@ -53,7 +59,7 @@ export class InvoiceService {
         };
 
         this.currentInvoice.items.push(item);
-        this.currentInvoice.total += itemPrice * quantity;
+        this.currentInvoice.subtotal += itemPrice * quantity;
         this.updateInvoice(this.currentInvoice);
         if (product.id) {
           this.productService.decreaseStockAmount(product.id, quantity);
