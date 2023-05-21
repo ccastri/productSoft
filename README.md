@@ -31,7 +31,7 @@ Actualmente cuenta con los siguientes modulos:
 - Guards: protegen las rutas y restringen la carga perezosa de la informacion de la app hasta que haya una autenticacion exitosa 
 - Pages: en el encontramos la mayoria de modulos. el modulo de facturacion, el modulo del inventario, el dashboard y la carga perezosa implementada en las rutas hijas son los puntos a resaltar
 - Pipes: para dar formato de moneda y redirigir la busqueda del path de las imagenes a los assets
-Services: el servicio de productos para manejar la logica de la data del inventario, invoice para manejar la logica de facturacion y user para manejar la autenticacion de los usuarios con firebase
+- Services: el servicio de productos para manejar la logica de la data del inventario, invoice para manejar la logica de facturacion y user para manejar la autenticacion de los usuarios con firebase
 
 # Rutas
 - Login:
@@ -45,8 +45,8 @@ Services: el servicio de productos para manejar la logica de la data del inventa
 - https://productsoft-52eb0.web.app/dasboard/orders
 - https://productsoft-52eb0.web.app//dashboard/cart
 
-** Se esta trabajando en el modal de confirmación y subida de imagenes para fotos de perfil y/o de los productos
-** Además un filtro de busqueda para el inventario y la futura coleccion de facturas
+** Se esta trabajando en el modal de confirmación y subida de imagenes para fotos de perfil y/o de los productos **
+** Además un filtro de busqueda para el inventario y la futura coleccion de facturas **
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.1.
 
