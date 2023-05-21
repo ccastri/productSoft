@@ -94,10 +94,12 @@ export class ProductService {
     }
   }
   // !async await para obtener producto por ID
-  // !Consultar la coleccion
-  // !Si el id coincide se hace el snapshot de en la coleccion
-  // !Usando el ID. La variable data contiene la data del documento
+  // !Consultar la coleccion:
+  // !1. Si el id coincide se hace el snapshot de en la coleccion
+  // !Usando el ID.
+  // !2. La variable data contiene la data del documento
   // ! el motodo devuelve el producto con la info actualizada
+  // !3. retorna el id actualizado
 
   getProductById(id: string): Observable<Product | undefined> {
     try {
