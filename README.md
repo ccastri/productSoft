@@ -34,16 +34,16 @@ Actualmente cuenta con los siguientes modulos:
 Services: el servicio de productos para manejar la logica de la data del inventario, invoice para manejar la logica de facturacion y user para manejar la autenticacion de los usuarios con firebase
 
 # Rutas
-Login:
-https://productsoft-52eb0.web.app/login
-Registro:
-https://productsoft-52eb0.web.app/register
-Principal:
-https://productsoft-52eb0.web.app/dashboard
+- Login:
+  - https://productsoft-52eb0.web.app/login
+- Registro:
+  - https://productsoft-52eb0.web.app/register
+- Principal:
+  - https://productsoft-52eb0.web.app/dashboard
 ## Rutas hijas:
-https://productsoft-52eb0.web.app/dashboard/products
-https://productsoft-52eb0.web.app/dasboard/orders
-https://productsoft-52eb0.web.app//dashboard/cart
+- https://productsoft-52eb0.web.app/dashboard/products
+- https://productsoft-52eb0.web.app/dasboard/orders
+- https://productsoft-52eb0.web.app//dashboard/cart
 
 **Se esta trabajando en el modal de confirmación y subida de imagenes para fotos de perfil y/o de los productos
 **Además un filtro de busqueda para el inventario y la futura coleccion de facturas
