@@ -22,25 +22,25 @@ En una pantalla de facturación manejada por cart.component.ts, invoice.service.
 Finalmente el sistema ha sido desplegado a traves de firebase hosting y el base_url del app-root se encuentra en https://productsoft-52eb0.web.app/
 Actualmente se está trabajando en un modal de confirmacion para mandar la factura a una nueva coleccion de facturas de ordenes en curso que puedan renderizarse en la pagina del dashboard
 
-#Modulos
+# Modulos
 Actualmente cuenta con los siguientes modulos:
--Auth: registro y login
--Shared: sidebar (header y footer opcionales)
--Components: componentes reusables como el loader o el modal de confirmacion
--Firebase: configuracion para el uso de los diferentes microservicios (autenticacion, almacenamiento, despliegue)
--Guards: protegen las rutas y restringen la carga perezosa de la informacion de la app hasta que haya una autenticacion exitosa 
--Pages: en el encontramos la mayoria de modulos. el modulo de facturacion, el modulo del inventario, el dashboard y la carga perezosa implementada en las rutas hijas son los puntos a resaltar
--Pipes: para dar formato de moneda y redirigir la busqueda del path de las imagenes a los assets
+- Auth: registro y login
+- Shared: sidebar (header y footer opcionales)
+- Components: componentes reusables como el loader o el modal de confirmacion
+- Firebase: configuracion para el uso de los diferentes microservicios (autenticacion, almacenamiento, despliegue)
+- Guards: protegen las rutas y restringen la carga perezosa de la informacion de la app hasta que haya una autenticacion exitosa 
+- Pages: en el encontramos la mayoria de modulos. el modulo de facturacion, el modulo del inventario, el dashboard y la carga perezosa implementada en las rutas hijas son los puntos a resaltar
+- Pipes: para dar formato de moneda y redirigir la busqueda del path de las imagenes a los assets
 Services: el servicio de productos para manejar la logica de la data del inventario, invoice para manejar la logica de facturacion y user para manejar la autenticacion de los usuarios con firebase
 
-#Rutas
+# Rutas
 Login:
 https://productsoft-52eb0.web.app/login
 Registro:
 https://productsoft-52eb0.web.app/register
 Principal:
 https://productsoft-52eb0.web.app/dashboard
-##Rutas hijas:
+## Rutas hijas:
 https://productsoft-52eb0.web.app/dashboard/products
 https://productsoft-52eb0.web.app/dasboard/orders
 https://productsoft-52eb0.web.app//dashboard/cart
