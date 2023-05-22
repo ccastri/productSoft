@@ -3,6 +3,11 @@ import { map, take } from 'rxjs/operators';
 import { ProductService } from './product.service';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.model';
+import Swal from 'sweetalert2';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/compat/firestore';
 
 export interface InvoiceItem {
   productId: string;
@@ -30,9 +35,15 @@ export interface Invoice {
 export class InvoiceService {
   // TODO: Meter el resto de cossa dirección, telefono, cliente, vendedor, etc proveniente del formulario
   public currentInvoice: Invoice = { id: '', items: [], subtotal: 0 };
+  invoiceCollection: AngularFirestoreCollection<Invoice>;
   private localStorageKey = 'currentInvoice';
-  constructor(private productService: ProductService) {
+  constructor(
+    private productService: ProductService,
+    public db: AngularFirestore
+  ) {
     this.loadInvoiceFromLocalStorage();
+
+    this.invoiceCollection = this.db.collection<Invoice>('facturas');
   }
   // Craga la factura actual: lo que ha sido agregadp y seleccionado por el front
   // La data esta guardada en el localStorage y se carga solo si info previa.
@@ -122,5 +133,16 @@ export class InvoiceService {
 
   public clearInvoiceFromLocalStorage(): void {
     localStorage.removeItem(this.localStorageKey);
+  }
+
+  async addInvoiceToCollection(invoice: Invoice): Promise<any> {
+    try {
+      await this.invoiceCollection.add(invoice);
+      // this.getProducts();
+      Swal.fire('Completado', 'Factura añadida!', 'success');
+    } catch (error) {
+      console.error('Error adding product:', error);
+      Swal.fire('Error', 'Failed to add product', 'error');
+    }
   }
 }

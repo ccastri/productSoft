@@ -1,36 +1,45 @@
-<div class="w-auto border- border-black flex items-center justify-center">
-  <div class="modal-content">
-    <h2>Invoice</h2>
-    <table>
-      <thead>
-        <tr>
-          <th class="">Product</th>
-          <th class="pr-4">Quantity</th>
-          <th class="pr-4">Price</th>
-          <th class="pr-4">Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="w-full border-y-2 border-black space-x-4"
-          *ngFor="let item of currentInvoice?.items; let i = index"
-        >
-          <!-- <td>{{ item.productId }}</td> -->
-          <td class="mx-auto text-center">{{ item.quantity }}</td>
-          <td class="mx-auto text-center">{{ item.make }}</td>
-          <td class="mx-auto text-center">{{ item.model }}</td>
-          <td class="mx-auto text-center">
-            {{ item.price | currencyFormat }}
-          </td>
-          <!-- <mat-icon fontSize="large" color="primary">delete</mat-icon> -->
-          <!-- (click)="removeFromInvoice(i)" -->
-        </tr>
-      </tbody>
-    </table>
-    <p>Subtotal: {{ currentInvoice?.subtotal ?? 0 | currencyFormat }}</p>
-    <p>Iva: 19%</p>
-    <p class="font-bold">
-      Total: {{ (currentInvoice?.subtotal ?? 0) * 0.19 | currencyFormat }}
-    </p>
+<div class="fixed z-50">
+  <div class="w-auto border- border-black flex items-center justify-center">
+    <div class="modal-content">
+      <h2>Invoice</h2>
+      <table>
+        <thead>
+          <tr>
+            <th class="">Product</th>
+            <th class="pr-4">Quantity</th>
+            <th class="pr-4">Price</th>
+            <th class="pr-4">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="w-full border-y-2 border-black space-x-4"
+            *ngFor="let item of invoice?.items; let i = index"
+          >
+            <!-- <td>{{ item.productId }}</td> -->
+            <td class="mx-auto text-center">{{ item.productId }}</td>
+            <td class="mx-auto text-center">{{ item.quantity }}</td>
+            <td class="mx-auto text-center">{{ item.make }}</td>
+            <td class="mx-auto text-center">{{ item.model }}</td>
+            <td class="mx-auto text-center">
+              {{ item.price | currencyFormat }}
+            </td>
+            <mat-icon
+              class="fixed"
+              fontSize="large"
+              color="primary"
+              (click)="removeFromInvoice(i)"
+              >delete</mat-icon
+            >
+            <!--  -->
+          </tr>
+        </tbody>
+      </table>
+      <p>Subtotal: {{ invoice?.subtotal ?? 0 | currencyFormat }}</p>
+      <p>Iva: 19%</p>
+      <p class="font-bold">
+        Total: {{ (invoice?.subtotal ?? 0) * 0.19 | currencyFormat }}
+      </p>
+    </div>
   </div>
 </div>

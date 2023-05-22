@@ -27,11 +27,12 @@ export class CartComponent implements OnInit {
   products: Product[] = [];
   isLoading = true;
   isModalOpen = false;
-  amountToAdd: number = 0; // Add this line to define the amountToAdd property
-  amountToDecrease: number = 0; // Add this line to define the amountToAdd property
-  // productForm!: FormGroup;
-  selectedProduct: Product | undefined;
+  amountToAdd: number = 0;
+  amountToDecrease: number = 0;
+
+  // selectedProduct: Product | undefined;
   isSelected?: boolean;
+  isShowInvoice?: boolean = false;
   currentInvoice: Invoice | undefined;
   public formSubmitted = false;
   public productForm = this.fb.group({
@@ -78,8 +79,13 @@ export class CartComponent implements OnInit {
     );
     for (const product of selectedProducts) {
       if (product.id && product.quantity) {
-        // Add a null check for product.id
+        // Add a null check for product.id and product quantity
         this.invoiceService
+          // !*********************************!
+          // !Need to add the         *********!
+          // !new props for the       *********!
+          // !detailed bill           *********!
+          // !*********************************!
           .addProductToInvoice(product.id, this.products, product.quantity)
           .subscribe(
             () => {
@@ -140,5 +146,15 @@ export class CartComponent implements OnInit {
     );
     this.isModalOpen = !this.isModalOpen;
     // this.currentInvoice;
+  }
+  public confirmPurchase(): void {
+    // Lógica para confirmar la compra
+    if (this.currentInvoice) {
+      console.log(this.currentInvoice);
+      this.invoiceService.addInvoiceToCollection(this.currentInvoice);
+    }
+    this.isShowInvoice = true;
+    // Mostrar el modal de la factura
+    this.isModalOpen = !this.isModalOpen;
   }
 }

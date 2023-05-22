@@ -108,7 +108,7 @@ export class ProductsComponent implements OnInit {
 
     // !------------------------------------------------------------------------------------------!
     // ! Here we cheked there's a product being clicked now we need
-    // ! To realize the equal amount our product is attempting to updated
+    // ! To realize the equal amount our product is attempting to be updated
 
     // ! Since we got the matching product id, we can go ahead and update the document
     // !Being updated we're mapping through the array passed by produc
@@ -197,7 +197,6 @@ export class ProductsComponent implements OnInit {
 
   async createProduct(): Promise<any> {
     this.formSubmitted = true;
-    // console.log(product);
     if (this.productForm.invalid) {
       // Display an error message or perform necessary actions when the form is invalid
       return;
@@ -220,23 +219,4 @@ export class ProductsComponent implements OnInit {
       Swal.fire('Error', 'Fallo al añadir producto', 'error');
     }
   }
-
-  // !TODO:
-  // !This is the next step Yesterday I was able to create a new product using this form
-  // ! I was working on it's  validations
-  // !But is pretty easy though
-
-  // onSubmit() {
-  //   if (this.productForm.invalid) {
-  //     // Handle form validation errors
-  //     return;
-  //   }
-
-  //   const formData = this.productForm.value;
-
-  //   this.createProduct(formData);
-
-  //   // Reset the form after submission
-  //   this.productForm.reset();
-  // }
 }

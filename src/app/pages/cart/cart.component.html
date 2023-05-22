@@ -1,5 +1,5 @@
 <app-loader *ngIf="isLoading"></app-loader>
-<div class="flex w-full flex-col h-full p-4 bg-slate-200">
+<div class="flex w-full flex-col h-full p-4 bg-slate-200 scroll-smooth">
   <div class="text-slate-700">
     <app-loader *ngIf="isLoading"></app-loader>
 
@@ -61,19 +61,24 @@
     <!--******************** !Modal para la enviar la factura ********************** -->
     <div
       [ngClass]="{ hidden: !isModalOpen }"
-      class="bg-slate-200 absolute flex top-0 h-screen w-full opacity-80"
+      class="bg-slate-200 flex fixed top-0 h-screen w-full opacity-80"
     >
+      <app-modal-form
+        [invoice]="invoiceService.currentInvoice"
+      ></app-modal-form>
       <div
-        class="z-50 absolute ml-20 mt-44 opacity-100 font-bold border-2 border-black"
+        class="z-50 space-x-8 fixed flex flex-row ml-20 mt-44 opacity-100 font-bold border-2 border-black"
       >
-        <app-modal-form
-          [invoice]="invoiceService.currentInvoice"
-        ></app-modal-form>
         <mat-icon fontSize="large" color="primary" (click)="clearInvoice()"
           >delete</mat-icon
         >
+        <mat-icon fontSize="large" color="primary" (click)="toggleModal()"
+          >close</mat-icon
+        >
         <!-- (click)="addProductsToInvoice()" -->
-        <mat-icon fontSize="large" color="primary">check</mat-icon>
+        <mat-icon fontSize="large" color="primary" (click)="confirmPurchase()"
+          >check</mat-icon
+        >
       </div>
     </div>
     <div
@@ -92,7 +97,7 @@
       />
     </div>
     <div
-      class="flex p-4 flex-col h-28 justify-center bg-slate-800 text-slate-200 items-start w-full"
+      class="flex p-4 flex-col h-28 -z-50 justify-center bg-slate-800 text-slate-200 items-start w-full"
     >
       <p class="">Fecha</p>
       <div class="pt-2">
@@ -218,7 +223,10 @@
       <!-- ********************* !Factura final *************************** -->
       <!-- ********************* !Factura final *************************** -->
       <!-- ********************* !Factura final *************************** -->
-      <div *ngIf="currentInvoice" class="m-4 border-2 border-slate-700">
+      <div
+        *ngIf="currentInvoice && isShowInvoice"
+        class="m-4 border-2 border-slate-700"
+      >
         <h2 class="border-b-2 border-slate-700 font-bold">
           Detalles de Factura
         </h2>

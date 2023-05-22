@@ -16,32 +16,20 @@ export class ModalFormComponent implements OnInit {
   // public hideModal: boolean = false;
   public uploadFile: File | undefined;
   products: Product[] = [];
-  selectedProducts: Product[] = []; // New property to store selected products
-  currentInvoice: Invoice | undefined;
+  selectedProducts: Invoice | void = undefined; // New property to store selected products
+  currentInvoice: Invoice | void = undefined;
   public showInvoiceModal: boolean = false;
-  @Input() public invoice: Invoice | undefined;
+  @Input() public invoice: Invoice | void = undefined;
 
   constructor(private invoiceService: InvoiceService) {}
 
   ngOnInit(): void {
-    this.selectedProducts = this.invoiceService.getSelectedProducts(
-      this.products
-    );
-    this.loadCurrentInvoice();
+    this.selectedProducts = this.invoiceService.loadInvoiceFromLocalStorage();
+    // this.invoice = this.invoiceService.loadInvoiceFromLocalStorage();
+    // this.loadCurrentInvoice();
   }
 
-  loadCurrentInvoice(): void {
-    this.currentInvoice = this.invoiceService.currentInvoice;
-    console.log(this.currentInvoice);
-    if (!this.currentInvoice) {
-      this.invoiceService.loadInvoiceFromLocalStorage();
-      this.currentInvoice = this.invoiceService.currentInvoice;
-    }
-    this.selectedProducts = this.invoiceService.getSelectedProducts(
-      this.products
-    );
-  }
-
+  // loadCurrentInvoice(): void {
   clearInvoice(): void {
     if (this.currentInvoice) {
       this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Remove all items from the items array
@@ -52,11 +40,17 @@ export class ModalFormComponent implements OnInit {
       this.currentInvoice.items = [];
     }
   }
-
-  public confirmPurchase(): void {
-    // Lógica para confirmar la compra
-
-    // Mostrar el modal de la factura
-    this.showInvoiceModal = true;
+  removeFromInvoice(index: number): void {
+    console.log(index);
+    console.log(this.currentInvoice);
+    if (this.invoice) {
+      console.log(this.invoice);
+      this.invoice.items.splice(index, 1);
+      console.log(this.invoice);
+      // this.currentInvoice.total = this.calculateTotal();
+      this.invoiceService.updateInvoice(this.invoice);
+      // this.toggleModal();
+      this.selectedProducts = this.invoice;
+    }
   }
 }

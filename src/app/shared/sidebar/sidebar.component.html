@@ -1,10 +1,10 @@
 <!-- Left Sidebar - style you can find in sidebar.scss  -->
 <!-- ============================================================== -->
-<div class="mr-4">
+<div class="mr-4 fixed h-screen z-50">
   <aside
     [ngClass]="{
-      '-translate-x-4 items-end pl-2': !isMenuOpen,
-      'translate-x-8 pr-4': isMenuOpen
+      '-translate-x-4 items-end pl-4 ': !isMenuOpen,
+      'translate-x-4 pr-4': isMenuOpen
     }"
     class="flex flex-col w-full transition duration-200 transform h-full bg-gray-500"
   >
@@ -72,7 +72,7 @@
               <mat-icon fontSize="large" color="primary">{{
                 item.icon
               }}</mat-icon>
-              <span class="w-auto space-x-8 h-6 border-2">
+              <span class="w-auto space-x-8 h-6 border-">
                 {{ item.title }}
                 <span
                   class="bg-slate-200 items-center mx-4 px-2 w-4 rounded-sm text-red-500"
