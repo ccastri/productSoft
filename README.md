@@ -1,19 +1,14 @@
 # LaptopsInventory
 ## Resumen
-This demo has been created in regards of a technical interview as a frontend developer
+Este demo ha sido creado con la finalidad de presentar una entevista técnica como desarrollador front end. Su proposito principal es evaluar el entendimiento de Angular y su empleo en la solucion de problemáticas comunes en el entorno empresarial.
 
-It's main purpose is to demonstrate basic understanding of angular as a JavaScript framework for apps development.
+El cliente requeria una aplicacion sin necesidad de servicios backend propiamente. En busca de ahorro de presupuesto tal vez, la solución fue implementada haciendo uso de firebase para emular la base de datos, los servicios de autenticacion y la actualizacion de informacion en tiempo real
 
-In this case the client was requesting a frontend app in which no backend was required and instead a serverless option as firebase was preferred.
 # 1er. Consideracion
-They requested for their app to be able of signing into the app (In this case firebase authentication services were employed).
-Para el login, los paths de /login y /registro contienen los formularios para inicio de sesion y/o registro de nuevos ususarios.
-Once the were login, they wanted to be able to see their catalog (Which is located in one of the child roots of the dashboard: inventario).
+El cliente requeria que su aplicacion tuviera un modulo de autenticación para que los vendedores de su tienda pudieran hacer inicio de sesion. Para el login y registro, los paths de /login y /register muestran los formularios para inicio de sesion y/o registro de nuevos ususarios.
 
-Para el manejo del inventario el servicio de firestore fue empleado y con él se diseñó una base de datos NoSQL donde hasta el momento se almacena la coleccion de usuarios y los productos en inventario. el path de /dashboard/products tiene toda la informacion asociada al inventario
-
-Adicionalmente el servicio de productos permite la comunicacion entre el componente sericio de productos, los eventos disparados por el usuario a traves del html y la informacion almacenada en las colecciones y documentos almacenados en firebase
 # 2da. Consideracion 
+El listado de productos del inventario y su gestion está a cargo del servicio de firestore. Con él, se diseñó una base de datos NoSQL donde hasta el momento se almacena la coleccion de usuarios y los productos en inventario. el path de /dashboard/products tiene toda la informacion asociada al inventario.
 Se requiere poder añadir o descontar unidades a los elementos en inventario además de poder ver el stock
 # 3er. Consideracion
 Se debe tener la opción de añadir nuevos productos a la lista de stock con un formulario para registrarlos
@@ -31,7 +26,7 @@ Actualmente cuenta con los siguientes modulos:
 - Firebase: configuracion para el uso de los diferentes microservicios (autenticacion, almacenamiento, despliegue)
 - Guards: protegen las rutas y restringen la carga perezosa de la informacion de la app hasta que haya una autenticacion exitosa 
 - Pages: en el encontramos la mayoria de modulos. el modulo de facturacion, el modulo del inventario, el dashboard y la carga perezosa implementada en las rutas hijas son los puntos a resaltar
-- Pipes: para dar formato de moneda y redirigir la busqueda del path de las imagenes a los assets
+- Pipes: para dar formato de moneda y cifrar el path de la propiedad src en los <img> tags para que archivos estáticos sean buscados directamente en los assets sin escribir todo el path
 - Services: el servicio de productos para manejar la logica de la data del inventario, invoice para manejar la logica de facturacion y user para manejar la autenticacion de los usuarios con firebase
 
 # Rutas
