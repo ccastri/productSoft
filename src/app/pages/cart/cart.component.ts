@@ -51,10 +51,14 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadInitialData();
+  }
+
+  loadInitialData() {
     setTimeout(() => {
       this.isLoading = false;
     }, 1500);
-    // !Toma el primer
+    // !Toma el primer arreglo de productos que encuentre
     this.productService
       .getProducts()
       .pipe(take(1))
@@ -62,6 +66,8 @@ export class CartComponent implements OnInit {
         // console.log(products);
 
         this.products = products;
+        // ! Carga los productos seleccionados
+        this.loadSelectionFromLocalStorage();
       });
     this.currentInvoice = this.invoiceService.currentInvoice;
     if (!this.currentInvoice) {
@@ -92,8 +98,6 @@ export class CartComponent implements OnInit {
               // Success handling, if needed
               this.currentInvoice = this.invoiceService.currentInvoice;
               console.log(this.currentInvoice);
-              // this.removeFromInvoice;
-              // this.invoiceService.clearInvoiceFromLocalStorage
               this.toggleModal();
               console.log('ok product has been added ');
             },
@@ -114,6 +118,8 @@ export class CartComponent implements OnInit {
       productId
     );
   }
+  // This is to get the chosen products quantity to be invoiced
+  //  the num variable loops through the stock.amount prop in the html
 
   getNumberArray(stock: number): number[] {
     return Array(stock)
@@ -141,11 +147,28 @@ export class CartComponent implements OnInit {
   }
 
   toggleModal() {
-    const selectedProducts = this.invoiceService.getSelectedProducts(
+    const selectedProducts = this.invoiceService.getSelectedProductsById(
       this.products
     );
+
+    selectedProducts.forEach((selectedProduct) => {
+      // Verificar si el producto ya está seleccionado por su id
+      const productId = selectedProduct.id;
+      const existingProduct = this.products.find(
+        (product) => product.id === productId
+      );
+
+      if (existingProduct) {
+        // Actualizar la cantidad del producto existente en lugar de agregar uno nuevo
+        existingProduct.quantity = selectedProduct.quantity;
+      } else {
+        // Agregar el producto a la selección
+        this.products.push(selectedProduct);
+      }
+    });
+
     this.isModalOpen = !this.isModalOpen;
-    // this.currentInvoice;
+    this.saveSelectionToLocalStorage();
   }
   public confirmPurchase(): void {
     // Lógica para confirmar la compra
@@ -156,5 +179,49 @@ export class CartComponent implements OnInit {
     this.isShowInvoice = true;
     // Mostrar el modal de la factura
     this.isModalOpen = !this.isModalOpen;
+  }
+  // saveSelectionToLocalStorage(): void {
+  //   console.log('Saving selection to localStorage');
+  //   localStorage.setItem('selectedProducts', JSON.stringify(this.products));
+  // }
+  saveSelectionToLocalStorage(): void {
+    const storedProducts: any = [];
+
+    this.products.forEach((product) => {
+      const storedProduct = { id: product.id, quantity: product.quantity };
+      storedProducts.push(storedProduct);
+    });
+
+    localStorage.setItem('selectedProducts', JSON.stringify(storedProducts));
+  }
+  // loadSelectionFromLocalStorage(): void {
+  //   const selectedProducts = localStorage.getItem('selectedProducts');
+  //   if (selectedProducts) {
+  //     this.products = JSON.parse(selectedProducts);
+  //     this.products.forEach((product) => {
+  //       const storedProduct = this.products.find(
+  //         (p: any) => p.id === product.id
+  //       );
+  //       if (storedProduct) {
+  //         product.isSelected = storedProduct.isSelected;
+  //         product.quantity = storedProduct.quantity;
+  //       }
+  //     });
+  //   }
+  // }
+  loadSelectionFromLocalStorage(): void {
+    const selectedProducts = localStorage.getItem('selectedProducts');
+    if (selectedProducts) {
+      const storedProducts = JSON.parse(selectedProducts);
+
+      storedProducts.forEach((storedProduct: any) => {
+        const product = this.products.find((p) => p.id === storedProduct.id);
+        if (product) {
+          product.quantity = storedProduct.quantity;
+        } else {
+          this.products.push(storedProduct);
+        }
+      });
+    }
   }
 }

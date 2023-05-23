@@ -108,6 +108,13 @@ export class InvoiceService {
   getSelectedProducts(products: Product[]): Product[] {
     return products.filter((product) => product.isSelected);
   }
+
+  getSelectedProductsById(products: Product[]): Product[] {
+    const selectedIds = products
+      .filter((product) => product.isSelected)
+      .map((product) => product.id);
+    return products.filter((product) => selectedIds.includes(product.id));
+  }
   // !*******Aqui filtramos por id comparando los elementos del listado de productos
   // !*******Obtenidos de la coleccion de firestore y el id proveniente de la seleccion del componente
   getSelectedProductQuantity(products: Product[], productId: string): number {
