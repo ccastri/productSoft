@@ -10,7 +10,7 @@ export class Product {
     public screenSize: string,
     public stockCode: string,
     public id?: string,
-    public isSelected?: boolean,
+    public isSelected: boolean = false,
     public quantity?: number,
     public amountToAdd?: number,
     public amountToDecrease?: number

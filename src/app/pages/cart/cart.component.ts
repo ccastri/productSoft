@@ -80,26 +80,22 @@ export class CartComponent implements OnInit {
   // 1. se define una constante que almacene arreglo de los productos seleccionados: selectedProducts
   // 2. para cada producto seleccionado se añade a la factura
   addProductsToInvoice() {
-    const selectedProducts = this.invoiceService.getSelectedProducts(
+    const selectedProducts = this.invoiceService.getSelectedProductsById(
       this.products
     );
     for (const product of selectedProducts) {
       if (product.id && product.quantity) {
-        // Add a null check for product.id and product quantity
         this.invoiceService
-          // !*********************************!
-          // !Need to add the         *********!
-          // !new props for the       *********!
-          // !detailed bill           *********!
-          // !*********************************!
-          .addProductToInvoice(product.id, this.products, product.quantity)
+          .addProductToInvoice(product.id, product.quantity)
           .subscribe(
             () => {
               // Success handling, if needed
               this.currentInvoice = this.invoiceService.currentInvoice;
               console.log(this.currentInvoice);
               this.toggleModal();
-              console.log('ok product has been added ');
+              console.log(
+                'Product has been added or quantity updated successfully'
+              );
             },
             (error) => {
               console.error(error);
@@ -147,29 +143,10 @@ export class CartComponent implements OnInit {
   }
 
   toggleModal() {
-    const selectedProducts = this.invoiceService.getSelectedProductsById(
-      this.products
-    );
-
-    selectedProducts.forEach((selectedProduct) => {
-      // Verificar si el producto ya está seleccionado por su id
-      const productId = selectedProduct.id;
-      const existingProduct = this.products.find(
-        (product) => product.id === productId
-      );
-
-      if (existingProduct) {
-        // Actualizar la cantidad del producto existente en lugar de agregar uno nuevo
-        existingProduct.quantity = selectedProduct.quantity;
-      } else {
-        // Agregar el producto a la selección
-        this.products.push(selectedProduct);
-      }
-    });
-
     this.isModalOpen = !this.isModalOpen;
     this.saveSelectionToLocalStorage();
   }
+
   public confirmPurchase(): void {
     // Lógica para confirmar la compra
     if (this.currentInvoice) {
@@ -184,14 +161,33 @@ export class CartComponent implements OnInit {
   //   console.log('Saving selection to localStorage');
   //   localStorage.setItem('selectedProducts', JSON.stringify(this.products));
   // }
+
+  private getStoredProductIndex(productId: string): number {
+    const storedProductsString = localStorage.getItem('selectedProducts');
+    if (storedProductsString) {
+      const storedProducts: any[] = JSON.parse(storedProductsString);
+      return storedProducts.findIndex((product) => product.id === productId);
+    }
+    return -1;
+  }
   saveSelectionToLocalStorage(): void {
     const storedProducts: any = [];
-
     this.products.forEach((product) => {
-      const storedProduct = { id: product.id, quantity: product.quantity };
-      storedProducts.push(storedProduct);
-    });
+      if (product.id && product.quantity) {
+        const storedProduct = { id: product.id, quantity: product.quantity };
 
+        // Check if the product is already stored
+        const storedIndex = this.getStoredProductIndex(product.id);
+        if (storedIndex !== -1) {
+          // If the product is already stored, update the quantity
+          const storedProductQuantity = storedProducts[storedIndex].quantity;
+          storedProduct.quantity += storedProductQuantity;
+          storedProducts.splice(storedIndex, 1); // Remove the existing stored product
+        }
+
+        storedProducts.push(storedProduct);
+      }
+    });
     localStorage.setItem('selectedProducts', JSON.stringify(storedProducts));
   }
   // loadSelectionFromLocalStorage(): void {

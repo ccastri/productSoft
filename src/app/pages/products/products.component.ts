@@ -219,4 +219,148 @@ export class ProductsComponent implements OnInit {
       Swal.fire('Error', 'Fallo al añadir producto', 'error');
     }
   }
+
+  async createProducts(): Promise<any> {
+    try {
+      for (const item of itemList) {
+        const product: Product = new Product(
+          item.make,
+          item.model,
+          item.description,
+          item.price,
+          item.stockAmount,
+          item.OS,
+          item.disadvantage,
+          item.screenSize,
+          item.stockCode,
+          '',
+          false,
+          0,
+          0,
+          0
+        );
+
+        const productData = { ...product }; // Convert Product object to plain JavaScript object
+        delete productData.id; // Exclude the 'id' field
+
+        await this.productService.addProduct(productData);
+      }
+
+      Swal.fire('Success', 'Productos añadidos exitosamente!', 'success');
+    } catch (error) {
+      console.error('Error adding products:', error);
+      Swal.fire('Error', 'Fallo al añadir productos', 'error');
+    }
+  }
 }
+
+const itemList: Product[] = [
+  {
+    make: 'Apple',
+    model: 'MacBook Pro',
+    description: 'Powerful laptop for developers',
+    price: 1999,
+    stockAmount: 50,
+    OS: 'macOS',
+    disadvantage: 'High price',
+    screenSize: '13 inches',
+    isSelected: false,
+    stockCode: 'MBP-001',
+  },
+  {
+    make: 'Dell',
+    model: 'XPS 13',
+    description: 'Thin and lightweight laptop with great performance',
+    price: 1499,
+    stockAmount: 30,
+    OS: 'Windows 10',
+    disadvantage: 'Limited ports',
+    screenSize: '13 inches',
+    isSelected: false,
+    stockCode: 'XPS-001',
+  },
+  {
+    make: 'Lenovo',
+    model: 'ThinkPad X1 Carbon',
+    description: 'Durable business laptop with excellent keyboard',
+    price: 1699,
+    stockAmount: 25,
+    OS: 'Windows 10',
+    disadvantage: 'Relatively expensive',
+    screenSize: '14 inches',
+    isSelected: false,
+    stockCode: 'TPX1C-001',
+  },
+  {
+    make: 'HP',
+    model: 'Spectre x360',
+    description: 'Convertible laptop with stylish design',
+    price: 1299,
+    stockAmount: 35,
+    OS: 'Windows 10',
+    disadvantage: 'Average battery life',
+    screenSize: '13 inches',
+    isSelected: false,
+    stockCode: 'SPECTRE-001',
+  },
+  {
+    make: 'Microsoft',
+    model: 'Surface Laptop 4',
+    description: 'Sleek and powerful laptop with excellent display',
+    price: 1599,
+    stockAmount: 20,
+    OS: 'Windows 10',
+    disadvantage: 'Limited upgrade options',
+    screenSize: '15 inches',
+    isSelected: false,
+    stockCode: 'SURFACE-001',
+  },
+  {
+    make: 'Asus',
+    model: 'ZenBook 14',
+    description: 'Compact laptop with great performance',
+    price: 1099,
+    stockAmount: 40,
+    OS: 'Windows 10',
+    disadvantage: 'Lacks Thunderbolt 3 ports',
+    screenSize: '14 inches',
+    isSelected: false,
+    stockCode: 'ZENBOOK-001',
+  },
+  {
+    make: 'Acer',
+    model: 'Swift 3',
+    description: 'Affordable and lightweight laptop for everyday use',
+    price: 799,
+    stockAmount: 50,
+    OS: 'Windows 10',
+    disadvantage: 'Average build quality',
+    screenSize: '14 inches',
+    isSelected: false,
+    stockCode: 'SWIFT-001',
+  },
+  {
+    make: 'Razer',
+    model: 'Blade 15',
+    description: 'Gaming laptop with powerful specifications',
+    price: 2199,
+    stockAmount: 15,
+    OS: 'Windows 10',
+    disadvantage: 'Expensive for non-gaming use',
+    screenSize: '15 inches',
+    isSelected: false,
+    stockCode: 'BLADE15-001',
+  },
+  {
+    make: 'Google',
+    model: 'Pixelbook Go',
+    description: 'Chromebook with long battery life and lightweight design',
+    price: 999,
+    stockAmount: 20,
+    OS: 'Chrome OS',
+    disadvantage: 'Limited software compatibility',
+    screenSize: '13 inches',
+    isSelected: false,
+    stockCode: 'PIXELBOOKGO-001',
+  },
+];

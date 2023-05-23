@@ -70,11 +70,8 @@ export class InvoiceService {
   // !*********Por producto y el subtotal global antes de impuestos
   // !*********Además del stock se descuenta la cantidad añadida a la factura
 
-  addProductToInvoice(
-    productId: string,
-    products: Product[],
-    quantity: number
-  ): Observable<void> {
+  addProductToInvoice(productId: string, quantity: number): Observable<void> {
+    const parsedQuantity = Number(quantity);
     return this.productService.getProductById(productId).pipe(
       take(1),
       map((product: Product | undefined) => {
@@ -86,18 +83,29 @@ export class InvoiceService {
           throw new Error(`Not enough stock for product ${product.make}`);
         }
 
-        const itemPrice = product.price;
-        const item: InvoiceItem = {
-          productId: product.id ?? '',
-          make: product.make ?? '',
-          model: product.model ?? '',
-          quantity,
-          price: itemPrice,
-        };
+        const existingItemIndex = this.currentInvoice.items.findIndex(
+          (item) => item.productId === productId
+        );
 
-        this.currentInvoice.items.push(item);
-        this.currentInvoice.subtotal += itemPrice * quantity;
+        if (existingItemIndex !== -1) {
+          // If the product already exists in the invoice, update the quantity
+          this.currentInvoice.items[existingItemIndex].quantity += quantity;
+        } else {
+          // If the product doesn't exist in the invoice, add it as a new item
+          const itemPrice = product.price;
+          const item: InvoiceItem = {
+            productId: product.id ?? '',
+            make: product.make ?? '',
+            model: product.model ?? '',
+            quantity,
+            price: itemPrice,
+          };
+          this.currentInvoice.items.push(item);
+        }
+
+        this.currentInvoice.subtotal += product.price * quantity;
         this.updateInvoice(this.currentInvoice);
+
         if (product.id) {
           this.productService.decreaseStockAmount(product.id, quantity);
         }
@@ -105,9 +113,9 @@ export class InvoiceService {
     );
   }
   // !*********El servicio nos ayuda a tener el ID de cada producto que se seleccione
-  getSelectedProducts(products: Product[]): Product[] {
-    return products.filter((product) => product.isSelected);
-  }
+  // getSelectedProducts(products: Product[]): Product[] {
+  //   return products.filter((product) => product.isSelected);
+  // }
 
   getSelectedProductsById(products: Product[]): Product[] {
     const selectedIds = products
