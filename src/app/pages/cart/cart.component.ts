@@ -78,7 +78,9 @@ export class CartComponent implements OnInit {
   }
   // ************** !Aqui se ejecuta el proceso para añadir los productos:¡**************//
   // 1. se define una constante que almacene arreglo de los productos seleccionados: selectedProducts
-  // 2. para cada producto seleccionado se añade a la factura
+  // 2.Por cada producto seleccionado en el servicio se va a realizar la siguiente operacion:
+  // -Subscripcion: 1. se asigna el valor  de la factura en el servicio a la variable de factura actual local
+  //                2. se cierra el modal
   addProductsToInvoice() {
     const selectedProducts = this.invoiceService.getSelectedProductsById(
       this.products
@@ -105,9 +107,10 @@ export class CartComponent implements OnInit {
       }
     }
     console.log(selectedProducts);
-    // Perform any necessary actions with the selected products
   }
-
+  // 1. Desde el servicio Seleccionamos la cantidad en stock del Id recibido
+  //    Recibimos el Id de c/producto y el producto como tal
+  // 2. El servicio retorna la cantidad del producto asociado con el id ó 0 por defecto
   getSelectedProductQuantity(productId: string): number {
     return this.invoiceService.getSelectedProductQuantity(
       this.products,
@@ -116,13 +119,17 @@ export class CartComponent implements OnInit {
   }
   // This is to get the chosen products quantity to be invoiced
   //  the num variable loops through the stock.amount prop in the html
-
+  //  1. Recibimos el stock de cada producto
+  //  2. iteramos por el numero de unidades que tenga cada producto
+  //  3. De esta manera en el selector de la cantidad a facturar se puede asignar el valor (num)
   getNumberArray(stock: number): number[] {
     return Array(stock)
       .fill(0)
       .map((x, i) => i + 1);
   }
-
+  // Vamos a remover el producto de la factura siempre y cuando haya una factura actualmente en memoria
+  // 1. Usamos splice() para eliminar el primer elemento que coincida con el indice
+  // 2. Se actualiza la factura actual llamando el metodo update servicio
   removeFromInvoice(index: number): void {
     if (this.currentInvoice) {
       this.currentInvoice.items.splice(index, 1);
@@ -131,6 +138,12 @@ export class CartComponent implements OnInit {
       this.toggleModal();
     }
   }
+  // Para limpiar todo el invoice actual:
+  // 1.Cuando exista una factura actual se reinician los valores
+  // 2. Se actualiza el valor de factura actual desde el servicio
+  // 3. Se limpia la memoria del localStorage desde el servicio
+  // 4. Se cierra el modal
+  // 5. El listado de productos de la factura actual almacenada localmente se asigna a cero nuevamente
   clearInvoice(): void {
     if (this.currentInvoice) {
       this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Remove all items from the items array
@@ -141,12 +154,18 @@ export class CartComponent implements OnInit {
       this.currentInvoice.items = [];
     }
   }
-
+  // Abrir/cerrar el modal
+  // 1. logica invertida para hacer el cirre/apertura
+  // 2. guardamos los productos preservados en la lista del modal
   toggleModal() {
     this.isModalOpen = !this.isModalOpen;
     this.saveSelectionToLocalStorage();
   }
-
+  // 1. Solo cunado haya una factura actual
+  // 2. Se llama al servicio de facturacion para que adicione la factura actual como
+  //    un nuevo documento en la coleccion de facturas (si no existe, firebase la crea)
+  // 3. El listado de productos se muestra debajo del formulario para editar tambien los demás campos de la factura
+  // 4. Se cierra el modal
   public confirmPurchase(): void {
     // Lógica para confirmar la compra
     if (this.currentInvoice) {
@@ -157,10 +176,11 @@ export class CartComponent implements OnInit {
     // Mostrar el modal de la factura
     this.isModalOpen = !this.isModalOpen;
   }
-  // saveSelectionToLocalStorage(): void {
-  //   console.log('Saving selection to localStorage');
-  //   localStorage.setItem('selectedProducts', JSON.stringify(this.products));
-  // }
+  //  1. Se llama lo que haya en localStorage bajo la clave selectedProducts
+  //  2. Se valida que existan productos seleccionados y se parsean de objeto plano a JSON
+  //  3. Busca el primer id dentro del arreglo de productos seleccionados que coincida con
+  //  el producto seleccionado por el usuario y devuelve el indice dentro del arreglo de productos
+  //  4. El resto de id's devuelven -1
 
   private getStoredProductIndex(productId: string): number {
     const storedProductsString = localStorage.getItem('selectedProducts');
@@ -170,6 +190,17 @@ export class CartComponent implements OnInit {
     }
     return -1;
   }
+  //  1. Se declara una variable local para almacenar los productos a facturar
+  //  2. Del listado de productos se validan tanto el id como la cantidad
+  //  3. Se asignan como un objeto dentro del arreglo de productos seleccionados
+  //  4. Se valida que el id del producto almacenado no haya sido añadido previamente
+  //  5. Cuando devuelve -1 significa que el id es de un producto sin añadir. Si coincide el prodcto fue aladido
+  //  6. Define una variable local para almacenar la cantidad correspondiente utilizando el id
+  //  del producto para encontrar el documento seleccionado dentro del listado producto seleccionado
+  //  7. Una vez se encuentra el indice del producto seleccionado y se modifica la cantidad
+  //  se elimina el registro actual de ese producto seleccionado con el metodo splice()
+  // 8. Se hace el push del producto seleccionado con el valor más reciente de cantidad seleccionada
+  // 9. Se guarda en localStorage bajo la clave de selectedProducts
   saveSelectionToLocalStorage(): void {
     const storedProducts: any = [];
     this.products.forEach((product) => {
@@ -190,21 +221,12 @@ export class CartComponent implements OnInit {
     });
     localStorage.setItem('selectedProducts', JSON.stringify(storedProducts));
   }
-  // loadSelectionFromLocalStorage(): void {
-  //   const selectedProducts = localStorage.getItem('selectedProducts');
-  //   if (selectedProducts) {
-  //     this.products = JSON.parse(selectedProducts);
-  //     this.products.forEach((product) => {
-  //       const storedProduct = this.products.find(
-  //         (p: any) => p.id === product.id
-  //       );
-  //       if (storedProduct) {
-  //         product.isSelected = storedProduct.isSelected;
-  //         product.quantity = storedProduct.quantity;
-  //       }
-  //     });
-  //   }
-  // }
+  // 1. Se recibe el listado de productos seleccionados del localStorage
+  // 2. Solo cuando exista el listado se parsea a objeto JSON para obtener los productos guardados
+  // 3. El nuevo listado de productos guardadosen formato JSON se itera para asignar las cantidades
+  // 4. cuando la instancia de producto seleccionado no existe en el listado de productos almacenados
+  // se añade como un nuevo producto almacenado
+
   loadSelectionFromLocalStorage(): void {
     const selectedProducts = localStorage.getItem('selectedProducts');
     if (selectedProducts) {
