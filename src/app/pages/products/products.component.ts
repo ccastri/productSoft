@@ -47,7 +47,7 @@ export class ProductsComponent implements OnInit {
       .getProducts()
       .pipe(take(1))
       .subscribe((products) => {
-        // console.log(products);
+        console.log(products);
         this.products = products;
         this.isLoading = false;
       });
@@ -187,6 +187,7 @@ export class ProductsComponent implements OnInit {
         });
 
       Swal.fire('Success', 'Producto añadido exitosamente!', 'success');
+      this.productService.getProducts();
     } catch (error) {
       console.error('Error adding product:', error);
       Swal.fire('Error', 'Fallo al añadir producto', 'error');
@@ -222,6 +223,7 @@ export class ProductsComponent implements OnInit {
   //       delete productData.id; // Exclude the 'id' field
 
   //       await this.productService.addProduct(productData);
+  //       await this.productService.getProducts();
   //     }
 
   //     Swal.fire('Success', 'Productos añadidos exitosamente!', 'success');

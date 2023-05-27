@@ -14,7 +14,7 @@
         <tbody>
           <tr
             class="w-full border-y-2 border-black space-x-4"
-            *ngFor="let item of invoice?.items; let i = index"
+            *ngFor="let item of currentInvoice?.items; let i = index"
           >
             <!-- <td>{{ item.productId }}</td> -->
             <td class="mx-auto text-center">{{ item.productId }}</td>
@@ -24,22 +24,39 @@
             <td class="mx-auto text-center">
               {{ item.price | currencyFormat }}
             </td>
-            <mat-icon
-              class="fixed"
-              fontSize="large"
-              color="primary"
-              (click)="removeFromInvoice(i)"
+            <!-- 
+              
+              <mat-icon fontSize="large" color="primary" (click)="clearInvoice()"
               >delete</mat-icon
-            >
-            <!--  -->
+              >
+            -->
           </tr>
         </tbody>
       </table>
-      <p>Subtotal: {{ invoice?.subtotal ?? 0 | currencyFormat }}</p>
+      <p>Subtotal: {{ currentInvoice?.subtotal ?? 0 | currencyFormat }}</p>
       <p>Iva: 19%</p>
       <p class="font-bold">
-        Total: {{ (invoice?.subtotal ?? 0) * 0.19 | currencyFormat }}
+        Total: {{ (currentInvoice?.subtotal ?? 0) * 1.19 | currencyFormat }}
       </p>
+      <div
+        class="z-50 flex flex-row space-x-8 opacity-100 font-bold border-2 border-black"
+      >
+        <mat-icon
+          class=""
+          fontSize="large"
+          color="primary"
+          (click)="clearInvoice()"
+          >delete</mat-icon
+        >
+        <mat-icon fontSize="large" color="primary" (click)="toggleModal()"
+          >close</mat-icon
+        >
+
+        <mat-icon fontSize="large" color="primary" (click)="confirmPurchase()"
+          >check</mat-icon
+        >
+      </div>
+      <div class="cursor-pointer fixed"></div>
     </div>
   </div>
 </div>

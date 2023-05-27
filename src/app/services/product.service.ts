@@ -35,6 +35,7 @@ export class ProductService {
       map((changes) =>
         changes.map((c: any) => ({
           id: c.payload.doc.id,
+
           ...c.payload.doc.data(),
         }))
       )

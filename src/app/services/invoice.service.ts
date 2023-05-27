@@ -76,14 +76,19 @@ export class InvoiceService {
   // ! 9. Se suma el subtotal  del producto por la cantidad
   // ! 10. Se descuenta la cantidad a comprar del stock actual del producto
   addProductToInvoice(productId: string, quantity: number): Observable<void> {
+    console.log(quantity);
     const parsedQuantity = Number(quantity);
+    console.log(parsedQuantity);
+    if (isNaN(parsedQuantity)) {
+      throw new Error(`Invalid quantity: ${quantity}`);
+    }
     return this.productService.getProductById(productId).pipe(
       take(1),
       map((product: Product | undefined) => {
         if (!product) {
           throw new Error(`Product with ID ${productId} not found`);
         }
-        if (product.stockAmount < quantity) {
+        if (product.stockAmount < parsedQuantity) {
           throw new Error(`Not enough stock for product ${product.make}`);
         }
         const existingItemIndex = this.currentInvoice.items.findIndex(
@@ -91,7 +96,8 @@ export class InvoiceService {
         );
         if (existingItemIndex !== -1) {
           // If the product already exists in the invoice, update the quantity
-          this.currentInvoice.items[existingItemIndex].quantity += quantity;
+          this.currentInvoice.items[existingItemIndex].quantity +=
+            parsedQuantity;
         } else {
           // If the product doesn't exist in the invoice, add it as a new item
           const itemPrice = product.price;
@@ -99,15 +105,15 @@ export class InvoiceService {
             productId: product.id ?? '',
             make: product.make ?? '',
             model: product.model ?? '',
-            quantity,
+            quantity: parsedQuantity,
             price: itemPrice,
           };
           this.currentInvoice.items.push(item);
         }
-        this.currentInvoice.subtotal += product.price * quantity;
+        this.currentInvoice.subtotal += product.price * parsedQuantity;
         this.updateInvoice(this.currentInvoice);
         if (product.id) {
-          this.productService.decreaseStockAmount(product.id, quantity);
+          this.productService.decreaseStockAmount(product.id, parsedQuantity);
         }
       })
     );

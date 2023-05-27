@@ -52,7 +52,11 @@
                 class="w-auto h-6 outline-none text-slate-700"
                 (change)="saveSelectionToLocalStorage()"
               >
-                <option *ngFor="let num of getNumberArray(product.stockAmount)">
+                <option
+                  *ngFor="let num of getNumberArray(product.stockAmount)"
+                  [value]="num"
+                  [selected]="num === 0 && product.quantity === undefined"
+                >
                   {{ num }}
                 </option>
               </select>
@@ -71,22 +75,8 @@
       class="bg-slate-200 flex fixed top-0 h-screen w-full opacity-80"
     >
       <app-modal-form
-        [invoice]="invoiceService.currentInvoice"
+        [currentInvoice]="invoiceService.currentInvoice"
       ></app-modal-form>
-      <div
-        class="z-50 space-x-8 fixed flex flex-row ml-20 mt-44 opacity-100 font-bold border-2 border-black"
-      >
-        <mat-icon fontSize="large" color="primary" (click)="clearInvoice()"
-          >delete</mat-icon
-        >
-        <mat-icon fontSize="large" color="primary" (click)="toggleModal()"
-          >close</mat-icon
-        >
-        <!-- (click)="addProductsToInvoice()" -->
-        <mat-icon fontSize="large" color="primary" (click)="confirmPurchase()"
-          >check</mat-icon
-        >
-      </div>
     </div>
     <div
       *ngIf="currentInvoice"

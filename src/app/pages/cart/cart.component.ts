@@ -63,17 +63,23 @@ export class CartComponent implements OnInit {
       .getProducts()
       .pipe(take(1))
       .subscribe((products) => {
-        // console.log(products);
-
+        // const filteredProducts = products.filter((product) => {
+        //   return !product.stockAmount || product.stockAmount <= 0;
+        // });
+        // this.products = [];
         this.products = products;
-        // ! Carga los productos seleccionados
+        console.log(this.products);
+        this.isLoading = false;
         this.loadSelectionFromLocalStorage();
+
+        // ! Carga los productos seleccionados
       });
     this.currentInvoice = this.invoiceService.currentInvoice;
     if (!this.currentInvoice) {
       // Load the currentInvoice from localStorage if it's not already set
       this.invoiceService.loadInvoiceFromLocalStorage();
       this.currentInvoice = this.invoiceService.currentInvoice;
+      !this.isModalOpen;
     }
   }
   // ************** !Aqui se ejecuta el proceso para añadir los productos:¡**************//
@@ -85,25 +91,39 @@ export class CartComponent implements OnInit {
     const selectedProducts = this.invoiceService.getSelectedProductsById(
       this.products
     );
+    this.toggleModal();
     for (const product of selectedProducts) {
+      console.log(selectedProducts);
+      console.log(product.quantity);
       if (product.id && product.quantity) {
-        this.invoiceService
-          .addProductToInvoice(product.id, product.quantity)
-          .subscribe(
-            () => {
-              // Success handling, if needed
-              this.currentInvoice = this.invoiceService.currentInvoice;
-              console.log(this.currentInvoice);
-              this.toggleModal();
-              console.log(
-                'Product has been added or quantity updated successfully'
-              );
-            },
-            (error) => {
-              console.error(error);
-              // Error handling, if needed
-            }
-          );
+        const existingItem = this.currentInvoice!.items.find(
+          (item) => item.productId === product.id
+        );
+        if (existingItem) {
+          console.log(existingItem.quantity);
+          // Si el producto ya existe en la factura, se actualiza la cantidad solamente
+          if (existingItem.quantity !== product.quantity) {
+            existingItem.quantity = product.quantity;
+            console.log(`Quantity updated for product with ID ${product.id}`);
+          }
+        } else {
+          // Si el producto no existe en la factura, se agrega como un nuevo elemento
+          this.invoiceService
+            .addProductToInvoice(product.id, product.quantity)
+            .subscribe(
+              () => {
+                // Success handling, if needed
+                console.log(this.currentInvoice);
+
+                this.currentInvoice = this.invoiceService.currentInvoice;
+                console.log('Product has been added successfully');
+              },
+              (error) => {
+                console.error(error);
+                // Error handling, if needed
+              }
+            );
+        }
       }
     }
     console.log(selectedProducts);
@@ -144,22 +164,68 @@ export class CartComponent implements OnInit {
   // 3. Se limpia la memoria del localStorage desde el servicio
   // 4. Se cierra el modal
   // 5. El listado de productos de la factura actual almacenada localmente se asigna a cero nuevamente
-  clearInvoice(): void {
-    if (this.currentInvoice) {
-      this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Remove all items from the items array
-      // this.currentInvoice.total = this.calculateTotal();
-      this.invoiceService.updateInvoice(this.currentInvoice);
-      this.invoiceService.clearInvoiceFromLocalStorage();
-      this.isModalOpen = false;
-      this.currentInvoice.items = [];
-    }
-  }
+
+  // clearInvoice(): void {
+  //   console.log(this.currentInvoice);
+  //   if (this.currentInvoice) {
+  //     const items = this.currentInvoice.items;
+  //     console.log(items);
+  //     // Itera sobre cada item y devuelve las cantidades al stock del producto
+  //     for (const item of items) {
+  //       const productIndex = this.products.findIndex(
+  //         (p) => p.id === item.productId
+  //       );
+  //       if (
+  //         productIndex !== -1 &&
+  //         this.products[productIndex].stockAmount !== undefined
+  //       ) {
+  //         // console.log(this.products[productIndex].stockAmount);
+  //         console.log(item.quantity);
+  //         // this.products[productIndex].stockAmount += item.quantity;
+  //         this.productService.updateProduct(this.products[productIndex]);
+  //       }
+  //     }
+  //     console.log(this.products);
+  //     this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Limpia la factura actual
+  //     this.invoiceService.updateInvoice(this.currentInvoice);
+  //     this.invoiceService.clearInvoiceFromLocalStorage();
+  //     // this.toggle = false;
+  //     this.currentInvoice.items = [];
+  //   }
+  // }
+  // clearInvoice(): void {
+  //   if (this.currentInvoice) {
+  //     const items = this.currentInvoice.items; // Guarda una referencia al arreglo de items actual
+
+  //     // Itera sobre cada item y devuelve las cantidades al arreglo de productos
+  //     for (const item of items) {
+  //       this.productService
+  //         .getProductById(item.productId)
+  //         .pipe(
+  //           take(1) // toma el primer valor emitido y luego completa la suscripción
+  //         )
+  //         .subscribe((product: Product | undefined) => {
+  //           if (product && product.quantity !== undefined) {
+  //             product.quantity += item.quantity;
+  //             this.productService.updateProduct(product); // Actualiza el producto
+  //           }
+  //         });
+  //     }
+
+  //     this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Limpia la factura actual
+  //     this.invoiceService.updateInvoice(this.currentInvoice);
+  //     this.invoiceService.clearInvoiceFromLocalStorage();
+  //     this.isModalOpen = false;
+  //     this.currentInvoice.items = [];
+  //   }
+  // }
   // Abrir/cerrar el modal
   // 1. logica invertida para hacer el cirre/apertura
   // 2. guardamos los productos preservados en la lista del modal
   toggleModal() {
     this.isModalOpen = !this.isModalOpen;
-    this.saveSelectionToLocalStorage();
+    console.log(this.isModalOpen);
+    // this.saveSelectionToLocalStorage();
   }
   // 1. Solo cunado haya una factura actual
   // 2. Se llama al servicio de facturacion para que adicione la factura actual como
@@ -204,19 +270,24 @@ export class CartComponent implements OnInit {
   saveSelectionToLocalStorage(): void {
     const storedProducts: any = [];
     this.products.forEach((product) => {
-      if (product.id && product.quantity) {
+      if (product.id && product.stockAmount > 0) {
         const storedProduct = { id: product.id, quantity: product.quantity };
 
         // Check if the product is already stored
         const storedIndex = this.getStoredProductIndex(product.id);
         if (storedIndex !== -1) {
           // If the product is already stored, update the quantity
-          const storedProductQuantity = storedProducts[storedIndex].quantity;
-          storedProduct.quantity += storedProductQuantity;
+          const storedProductQuantity: number = Number(
+            storedProducts[storedIndex].quantity
+          ); // Convert to number
+          const newQuantity: number =
+            Number(storedProduct.quantity) + storedProductQuantity; // Convert to number and sum
+          storedProduct.quantity = newQuantity; // Convert back to string
           storedProducts.splice(storedIndex, 1); // Remove the existing stored product
         }
 
         storedProducts.push(storedProduct);
+        this.isModalOpen && this.saveSelectionToLocalStorage();
       }
     });
     localStorage.setItem('selectedProducts', JSON.stringify(storedProducts));

@@ -13,44 +13,84 @@ import { Product } from 'src/app/models/product.model';
   styles: [],
 })
 export class ModalFormComponent implements OnInit {
-  // public hideModal: boolean = false;
+  public isModalOpen: boolean = false;
   public uploadFile: File | undefined;
   products: Product[] = [];
   selectedProducts: Invoice | void = undefined; // New property to store selected products
-  currentInvoice: Invoice | void = undefined;
+  // currentInvoice: Invoice | void = undefined;
   public showInvoiceModal: boolean = false;
-  @Input() public invoice: Invoice | void = undefined;
+  @Input() public currentInvoice: Invoice | void = undefined;
 
-  constructor(private invoiceService: InvoiceService) {}
+  constructor(
+    public productService: ProductService,
+    private invoiceService: InvoiceService
+  ) {}
 
   ngOnInit(): void {
-    this.selectedProducts = this.invoiceService.loadInvoiceFromLocalStorage();
-    // this.invoice = this.invoiceService.loadInvoiceFromLocalStorage();
+    // this.selectedProducts = this.invoiceService.loadInvoiceFromLocalStorage();
+    this.currentInvoice = this.invoiceService.loadInvoiceFromLocalStorage();
+    console.log(this.currentInvoice);
     // this.loadCurrentInvoice();
   }
 
   // loadCurrentInvoice(): void {
+
+  // removeFromInvoice(index: number): void {
+  //   console.log(index);
+  //   console.log(this.currentInvoice);
+  //   if (this.invoice) {
+  //     console.log(this.invoice);
+  //     this.invoice.items.splice(index, 1);
+  //     console.log(this.invoice);
+  //     // this.currentInvoice.total = this.calculateTotal();
+  //     this.invoiceService.updateInvoice(this.invoice);
+  //     // this.toggleModal();
+  //     this.selectedProducts = this.invoice;
+  //   }
+  // }
   clearInvoice(): void {
+    console.log(this.currentInvoice);
+    console.log('click');
+
     if (this.currentInvoice) {
-      this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Remove all items from the items array
-      // this.currentInvoice.total = this.calculateTotal();
+      const items = this.currentInvoice.items;
+      console.log(items);
+      // Itera sobre cada item y devuelve las cantidades al stock del producto
+      for (const item of items) {
+        const productIndex = this.products.findIndex(
+          (p) => p.id === item.productId
+        );
+        if (
+          productIndex !== -1 &&
+          this.products[productIndex].stockAmount !== undefined
+        ) {
+          // console.log(this.products[productIndex].stockAmount);
+          console.log(item.quantity);
+          // this.products[productIndex].stockAmount += item.quantity;
+          this.productService.updateProduct(this.products[productIndex]);
+        }
+      }
+      console.log(this.products);
+      this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Limpia la factura actual
       this.invoiceService.updateInvoice(this.currentInvoice);
       this.invoiceService.clearInvoiceFromLocalStorage();
-      // this.isModalOpen = false;
+      // this.toggle = false;
       this.currentInvoice.items = [];
     }
   }
-  removeFromInvoice(index: number): void {
-    console.log(index);
-    console.log(this.currentInvoice);
-    if (this.invoice) {
-      console.log(this.invoice);
-      this.invoice.items.splice(index, 1);
-      console.log(this.invoice);
-      // this.currentInvoice.total = this.calculateTotal();
-      this.invoiceService.updateInvoice(this.invoice);
-      // this.toggleModal();
-      this.selectedProducts = this.invoice;
+  public confirmPurchase(): void {
+    // Lógica para confirmar la compra
+    if (this.currentInvoice) {
+      console.log(this.currentInvoice);
+      this.invoiceService.addInvoiceToCollection(this.currentInvoice);
     }
+    // this.isShowInvoice = true;
+    // Mostrar el modal de la factura
+    this.isModalOpen = !this.isModalOpen;
+  }
+  toggleModal() {
+    this.isModalOpen = !this.isModalOpen;
+    console.log(this.isModalOpen);
+    // this.saveSelectionToLocalStorage();
   }
 }
