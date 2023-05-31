@@ -177,5 +177,10 @@ export class InvoiceService {
 
   public clearInvoiceFromLocalStorage(): void {
     localStorage.removeItem(this.localStorageKey);
+    // localStorage.removeItem('selectedProducts')
+    this.clearSelectedProducts();
+  }
+  clearSelectedProducts(): void {
+    localStorage.removeItem('selectedProducts');
   }
 }

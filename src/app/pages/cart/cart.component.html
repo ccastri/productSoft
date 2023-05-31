@@ -71,7 +71,7 @@
     <!--******************** !Modal para la enviar la factura ********************** -->
     <!--******************** !Modal para la enviar la factura ********************** -->
     <div
-      [ngClass]="{ hidden: !isModalOpen }"
+      [ngClass]="{ hidden: !modalService.isModalOpen }"
       class="bg-slate-200 flex fixed top-0 h-screen w-full opacity-80"
     >
       <app-modal-form

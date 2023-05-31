@@ -16,6 +16,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Invoice, InvoiceService } from 'src/app/services/invoice.service';
 import { ModalFormComponent } from 'src/app/components/modal-form/modal-form.component';
 import { CurrencyFormatPipe } from 'src/app/pipes/cuurency.pipe';
+import { ModalService } from 'src/app/services/modal-invoice.service';
 
 // private currencyPipe: CurrencyPipe,
 @Component({
@@ -47,11 +48,14 @@ export class CartComponent implements OnInit {
     public productService: ProductService,
     private fb: FormBuilder,
     private db: AngularFirestore,
-    public invoiceService: InvoiceService
+    public invoiceService: InvoiceService,
+    public modalService: ModalService
   ) {}
 
   ngOnInit(): void {
     this.loadInitialData();
+    this.isModalOpen = this.modalService.isModalOpen;
+    console.log(this.isModalOpen);
   }
 
   loadInitialData() {
@@ -82,52 +86,71 @@ export class CartComponent implements OnInit {
       !this.isModalOpen;
     }
   }
+  toggleModal(): boolean {
+    return this.modalService.toggleModal();
+  }
   // ************** !Aqui se ejecuta el proceso para añadir los productos:¡**************//
   // 1. se define una constante que almacene arreglo de los productos seleccionados: selectedProducts
   // 2.Por cada producto seleccionado en el servicio se va a realizar la siguiente operacion:
   // -Subscripcion: 1. se asigna el valor  de la factura en el servicio a la variable de factura actual local
   //                2. se cierra el modal
   addProductsToInvoice() {
-    const selectedProducts = this.invoiceService.getSelectedProductsById(
-      this.products
-    );
-    this.toggleModal();
-    for (const product of selectedProducts) {
+    this.loadInitialData();
+    return new Promise<void>((resolve, reject) => {
+      const selectedProducts = this.invoiceService.getSelectedProductsById(
+        this.products
+      );
       console.log(selectedProducts);
-      console.log(product.quantity);
-      if (product.id && product.quantity) {
-        const existingItem = this.currentInvoice!.items.find(
-          (item) => item.productId === product.id
-        );
-        if (existingItem) {
-          console.log(existingItem.quantity);
-          // Si el producto ya existe en la factura, se actualiza la cantidad solamente
-          if (existingItem.quantity !== product.quantity) {
-            existingItem.quantity = product.quantity;
-            console.log(`Quantity updated for product with ID ${product.id}`);
-          }
-        } else {
-          // Si el producto no existe en la factura, se agrega como un nuevo elemento
-          this.invoiceService
-            .addProductToInvoice(product.id, product.quantity)
-            .subscribe(
-              () => {
-                // Success handling, if needed
-                console.log(this.currentInvoice);
-
-                this.currentInvoice = this.invoiceService.currentInvoice;
-                console.log('Product has been added successfully');
-              },
-              (error) => {
-                console.error(error);
-                // Error handling, if needed
-              }
+      this.isModalOpen = this.toggleModal();
+      // this.invoiceService.clearInvoice()
+      // this.invoiceService.clearSelectedProducts();
+      // this.modalService.toggleModal();
+      for (const product of selectedProducts) {
+        console.log(product.quantity);
+        if (product.id && product.quantity) {
+          const existingItem = this.currentInvoice!.items.find(
+            (item) => item.productId === product.id
+          );
+          if (existingItem) {
+            console.log(existingItem.quantity);
+            // Si el producto ya existe en la factura, se actualiza la cantidad solamente
+            if (existingItem.quantity !== product.quantity) {
+              existingItem.quantity = product.quantity;
+              console.log(`Quantity updated for product with ID ${product.id}`);
+            }
+          } else {
+            // Verificar si el producto no está ya en la selección anterior
+            const previousItem = this.invoiceService.currentInvoice.items.find(
+              (item) => item.productId === product.id
             );
+            if (!previousItem) {
+              // Si el producto no existe en la factura ni en la selección anterior, se agrega como un nuevo elemento
+              this.invoiceService
+                .addProductToInvoice(product.id, product.quantity)
+                .subscribe(
+                  () => {
+                    // Success handling, if needed
+                    // No esta funcionando y esto tiene que ser refactorizado
+                    console.log('Product has been added successfully');
+                    resolve();
+                  },
+                  (error) => {
+                    console.error(error);
+                    reject(error);
+                    // Error handling, if needed
+                  }
+                );
+            }
+          }
         }
+        console.log(selectedProducts);
+        console.log(this.invoiceService.currentInvoice);
+        console.log(this.currentInvoice);
       }
-    }
-    console.log(selectedProducts);
+    });
+    //  this.currentInvoice = this.invoiceService.getCurrentInvoice();
   }
+
   // 1. Desde el servicio Seleccionamos la cantidad en stock del Id recibido
   //    Recibimos el Id de c/producto y el producto como tal
   // 2. El servicio retorna la cantidad del producto asociado con el id ó 0 por defecto
@@ -155,7 +178,7 @@ export class CartComponent implements OnInit {
       this.currentInvoice.items.splice(index, 1);
       // this.currentInvoice.total = this.calculateTotal();
       this.invoiceService.updateInvoice(this.currentInvoice);
-      this.toggleModal();
+      // this.toggleModal();
     }
   }
   // Para limpiar todo el invoice actual:
@@ -219,29 +242,24 @@ export class CartComponent implements OnInit {
   //     this.currentInvoice.items = [];
   //   }
   // }
-  // Abrir/cerrar el modal
-  // 1. logica invertida para hacer el cirre/apertura
-  // 2. guardamos los productos preservados en la lista del modal
-  toggleModal() {
-    this.isModalOpen = !this.isModalOpen;
-    console.log(this.isModalOpen);
-    // this.saveSelectionToLocalStorage();
-  }
+
   // 1. Solo cunado haya una factura actual
   // 2. Se llama al servicio de facturacion para que adicione la factura actual como
   //    un nuevo documento en la coleccion de facturas (si no existe, firebase la crea)
   // 3. El listado de productos se muestra debajo del formulario para editar tambien los demás campos de la factura
   // 4. Se cierra el modal
-  public confirmPurchase(): void {
-    // Lógica para confirmar la compra
-    if (this.currentInvoice) {
-      console.log(this.currentInvoice);
-      this.invoiceService.addInvoiceToCollection(this.currentInvoice);
-    }
-    this.isShowInvoice = true;
-    // Mostrar el modal de la factura
-    this.isModalOpen = !this.isModalOpen;
-  }
+  // public confirmPurchase(): void {
+  //   // Lógica para confirmar la compra
+  //   if (this.currentInvoice) {
+  //     console.log(this.currentInvoice);
+  //     this.invoiceService.addInvoiceToCollection(this.currentInvoice);
+  //   }
+  //   this.isShowInvoice = true;
+  //   // Mostrar el modal de la factura
+  //   this.isModalOpen = !this.isModalOpen;
+  //   console.log(this.isModalOpen);
+  // }
+
   //  1. Se llama lo que haya en localStorage bajo la clave selectedProducts
   //  2. Se valida que existan productos seleccionados y se parsean de objeto plano a JSON
   //  3. Busca el primer id dentro del arreglo de productos seleccionados que coincida con
@@ -271,7 +289,11 @@ export class CartComponent implements OnInit {
     const storedProducts: any = [];
     this.products.forEach((product) => {
       if (product.id && product.stockAmount > 0) {
-        const storedProduct = { id: product.id, quantity: product.quantity };
+        const storedProduct = {
+          id: product.id,
+          quantity: product.quantity,
+          stockAmount: product.stockAmount,
+        };
 
         // Check if the product is already stored
         const storedIndex = this.getStoredProductIndex(product.id);
@@ -287,7 +309,7 @@ export class CartComponent implements OnInit {
         }
 
         storedProducts.push(storedProduct);
-        this.isModalOpen && this.saveSelectionToLocalStorage();
+        // this.isModalOpen && this.saveSelectionToLocalStorage();
       }
     });
     localStorage.setItem('selectedProducts', JSON.stringify(storedProducts));
