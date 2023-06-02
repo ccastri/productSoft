@@ -72,7 +72,7 @@
     <!--******************** !Modal para la enviar la factura ********************** -->
     <div
       [ngClass]="{ hidden: !modalService.isModalOpen }"
-      class="bg-slate-200 flex fixed top-0 h-screen w-full opacity-80"
+      class="bg-slate-200 flex fixed top-4 left-12 px-4 z-50 h-screen w-full opacity-80"
     >
       <app-modal-form
         [currentInvoice]="invoiceService.currentInvoice"

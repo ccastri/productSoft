@@ -1,16 +1,31 @@
-<div class="fixed z-50">
-  <div class="w-auto border- border-black flex items-center justify-center">
-    <div class="modal-content">
+<div class="fixed w-[80%] flex z-50">
+  <div class="w-full border- border-black flex items-center justify-center">
+    <div class="w-full flex flex-col space-y-4">
       <h2>06/07/2023</h2>
-      <p>Factura de venta #: {{ currentInvoice?.id ?? null }}</p>
-      <p>Vendedor: {{ currentInvoice?.vendedor }}</p>
+      <p>
+        Factura de venta #:
+        <span class="font-semibold">{{ currentInvoice?.id ?? null }}</span>
+      </p>
+      <p>
+        Vendedor:
+        <span class="font-semibold">{{ currentInvoice?.vendedor }}</span>
+      </p>
+      <p>
+        Cliente:
+        <span class="font-semibold">{{ currentInvoice?.cliente }}</span>
+      </p>
+      <p>
+        email: <span class="font-semibold">{{ currentInvoice?.email }}</span>
+      </p>
       <table>
         <thead>
           <tr>
-            <th class="">Product</th>
-            <th class="pr-4">Quantity</th>
-            <th class="pr-4">Price</th>
-            <th class="pr-4">Subtotal</th>
+            <!-- <th class="">Producto</th> -->
+            <th class="pr-4">Cantidad</th>
+            <th class="pr-4">Marca</th>
+            <th class="pr-4">Modelo</th>
+            <th class="pr-4">Precio</th>
+            <!-- <th class="pr-4">Subtotal</th> -->
           </tr>
         </thead>
         <tbody>
@@ -19,7 +34,7 @@
             *ngFor="let item of currentInvoice?.items; let i = index"
           >
             <!-- <td>{{ item.productId }}</td> -->
-            <td class="mx-auto text-center">{{ item.productId }}</td>
+            <!-- <td class="mx-auto text-center">{{ item.productId }}</td> -->
             <td class="mx-auto text-center">{{ item.quantity }}</td>
             <td class="mx-auto text-center">{{ item.make }}</td>
             <td class="mx-auto text-center">{{ item.model }}</td>
@@ -51,7 +66,10 @@
           (click)="clearInvoice()"
           >delete</mat-icon
         >
-        <mat-icon fontSize="large" color="primary" (click)="toggleModal()"
+        <mat-icon
+          fontSize="large"
+          color="primary"
+          (click)="modalService.toggleModal()"
           >close</mat-icon
         >
 
