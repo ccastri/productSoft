@@ -34,7 +34,16 @@ export class CartComponent implements OnInit {
   // selectedProduct: Product | undefined;
   isSelected?: boolean;
   isShowInvoice?: boolean = false;
-  currentInvoice: Invoice | undefined;
+  currentInvoice: Invoice | undefined = {
+    id: '',
+    items: [],
+    subtotal: 0,
+    cliente: '',
+    vendedor: '',
+    direccion: '',
+    email: '',
+    moneda: '',
+  };
   public formSubmitted = false;
   public productForm = this.fb.group({
     make: ['', Validators.required],
@@ -102,9 +111,6 @@ export class CartComponent implements OnInit {
       );
       console.log(selectedProducts);
       this.isModalOpen = this.toggleModal();
-      // this.invoiceService.clearInvoice()
-      // this.invoiceService.clearSelectedProducts();
-      // this.modalService.toggleModal();
       for (const product of selectedProducts) {
         console.log(product.quantity);
         if (product.id && product.quantity) {
@@ -188,61 +194,6 @@ export class CartComponent implements OnInit {
   // 4. Se cierra el modal
   // 5. El listado de productos de la factura actual almacenada localmente se asigna a cero nuevamente
 
-  // clearInvoice(): void {
-  //   console.log(this.currentInvoice);
-  //   if (this.currentInvoice) {
-  //     const items = this.currentInvoice.items;
-  //     console.log(items);
-  //     // Itera sobre cada item y devuelve las cantidades al stock del producto
-  //     for (const item of items) {
-  //       const productIndex = this.products.findIndex(
-  //         (p) => p.id === item.productId
-  //       );
-  //       if (
-  //         productIndex !== -1 &&
-  //         this.products[productIndex].stockAmount !== undefined
-  //       ) {
-  //         // console.log(this.products[productIndex].stockAmount);
-  //         console.log(item.quantity);
-  //         // this.products[productIndex].stockAmount += item.quantity;
-  //         this.productService.updateProduct(this.products[productIndex]);
-  //       }
-  //     }
-  //     console.log(this.products);
-  //     this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Limpia la factura actual
-  //     this.invoiceService.updateInvoice(this.currentInvoice);
-  //     this.invoiceService.clearInvoiceFromLocalStorage();
-  //     // this.toggle = false;
-  //     this.currentInvoice.items = [];
-  //   }
-  // }
-  // clearInvoice(): void {
-  //   if (this.currentInvoice) {
-  //     const items = this.currentInvoice.items; // Guarda una referencia al arreglo de items actual
-
-  //     // Itera sobre cada item y devuelve las cantidades al arreglo de productos
-  //     for (const item of items) {
-  //       this.productService
-  //         .getProductById(item.productId)
-  //         .pipe(
-  //           take(1) // toma el primer valor emitido y luego completa la suscripción
-  //         )
-  //         .subscribe((product: Product | undefined) => {
-  //           if (product && product.quantity !== undefined) {
-  //             product.quantity += item.quantity;
-  //             this.productService.updateProduct(product); // Actualiza el producto
-  //           }
-  //         });
-  //     }
-
-  //     this.currentInvoice = { id: '', items: [], subtotal: 0 }; // Limpia la factura actual
-  //     this.invoiceService.updateInvoice(this.currentInvoice);
-  //     this.invoiceService.clearInvoiceFromLocalStorage();
-  //     this.isModalOpen = false;
-  //     this.currentInvoice.items = [];
-  //   }
-  // }
-
   // 1. Solo cunado haya una factura actual
   // 2. Se llama al servicio de facturacion para que adicione la factura actual como
   //    un nuevo documento en la coleccion de facturas (si no existe, firebase la crea)
@@ -250,15 +201,6 @@ export class CartComponent implements OnInit {
   // 4. Se cierra el modal
   // public confirmPurchase(): void {
   //   // Lógica para confirmar la compra
-  //   if (this.currentInvoice) {
-  //     console.log(this.currentInvoice);
-  //     this.invoiceService.addInvoiceToCollection(this.currentInvoice);
-  //   }
-  //   this.isShowInvoice = true;
-  //   // Mostrar el modal de la factura
-  //   this.isModalOpen = !this.isModalOpen;
-  //   console.log(this.isModalOpen);
-  // }
 
   //  1. Se llama lo que haya en localStorage bajo la clave selectedProducts
   //  2. Se valida que existan productos seleccionados y se parsean de objeto plano a JSON

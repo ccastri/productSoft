@@ -20,6 +20,7 @@ export interface InvoiceItem {
 export interface Invoice {
   fecha?: string;
   id?: string;
+  vendedor?: string;
   cliente?: string;
   direccion?: string;
   email?: string;

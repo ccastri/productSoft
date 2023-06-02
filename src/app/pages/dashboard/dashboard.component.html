@@ -2,7 +2,7 @@
   <app-loader *ngIf="isLoading"></app-loader>
   <div
     *ngIf="!isLoading"
-    class="h-screen w-full px-20 border-2 flex border-black"
+    class="h-full w-full border-2 space-y-4 flex flex-col border-black"
   >
     <!-- <aside class="border-2 flex h-scren flex-col border-black w-1/4">
     <h2 class="mb-20">Menu</h2>
@@ -12,11 +12,42 @@
       <p class="mb-2 border-2 border-black">CartIcon</p>
     </div>
   </aside> -->
-    <p class="w-">dashboard works!</p>
-  </div>
-  <!-- <div class="absolute flex top-[50%] ml-[50%] border-2 border-black w-full">
+    <!-- <p class="w-">dashboard works!</p> -->
+    <div class="w-1/2 flex border-2 border-black items-start h-1/2">
+      <ngx-charts-pie-chart
+        class="w-[50%]"
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="data"
+        [labels]="true"
+        [legend]="true"
+        [explodeSlices]="true"
+        (select)="onSelect($event)"
+      >
+      </ngx-charts-pie-chart>
+    </div>
+    <div
+      class="w-full flex h-1/2 border-2 justify-end items-end border-black pr-6"
+    >
+      <ngx-charts-bar-vertical
+        [view]="view2"
+        [scheme]="colorScheme2"
+        [results]="data2"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+
+    <!-- <div class="absolute flex top-[50%] ml-[50%] border-2 border-black w-full">
     <app-modal-form [invoice]="invoiceService.currentInvoice"></app-modal-form>
   </div> -->
 
-  <!-- *ngIf="showInvoiceModal" -->
+    <!-- *ngIf="showInvoiceModal" -->
+  </div>
 </div>

@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductsComponent } from './products/products.component';
@@ -48,6 +49,7 @@ import { ModalFormComponent } from '../components/modal-form/modal-form.componen
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
+    NgxChartsModule,
     // ModalFormComponent,
   ],
   providers: [AuthGuard], // Add AuthGuard to the providers array
