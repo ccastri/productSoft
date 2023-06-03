@@ -1,37 +1,91 @@
 import { Component, OnInit } from '@angular/core';
 // import { ModalFormComponent } from 'src/app/components/modal-form/modal-form.component';
-import { InvoiceService } from 'src/app/services/invoice.service';
+import { Invoice, InvoiceService } from 'src/app/services/invoice.service';
 // import { ModalImageCom}ponent } from 'src/app/components/modal-form/modal-form.component';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { ProductService } from 'src/app/services/product.service';
+import { take } from 'rxjs';
+import { Product } from 'src/app/models/product.model';
+import { slideInAnimation } from '../animations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+  animations: [slideInAnimation],
 })
 export class DashboardComponent implements OnInit {
   public isLoading: boolean = true;
-  constructor(public invoiceService: InvoiceService) {}
+  currentInvoice: Invoice | undefined = {
+    id: '',
+    items: [],
+    subtotal: 0,
+    cliente: '',
+    vendedor: '',
+    direccion: '',
+    email: '',
+    moneda: '',
+  };
+  products: Product[] = [];
+  data3: any = [];
+  constructor(
+    public invoiceService: InvoiceService,
+    public productService: ProductService
+  ) {}
   ngOnInit(): void {
+    this.loadInitialData();
+  }
+
+  loadInitialData() {
     setTimeout(() => {
       this.isLoading = false;
-    }, 1000);
+    }, 1500);
+    // !Toma el primer arreglo de productos que encuentre
+    this.productService
+      .getProducts()
+      .pipe(take(1))
+      .subscribe((products) => {
+        // const filteredProducts = products.filter((product) => {
+        //   return !product.stockAmount || product.stockAmount <= 0;
+        // });
+        // this.products = [];
+        this.products = products;
+        this.setupChart();
+        // this.loadSelectionFromLocalStorage();
+
+        // ! Carga los productos seleccionados
+      });
+    this.currentInvoice = this.invoiceService.currentInvoice;
+    if (!this.currentInvoice) {
+      // Load the currentInvoice from localStorage if it's not already set
+      this.invoiceService.loadInvoiceFromLocalStorage();
+      this.currentInvoice = this.invoiceService.currentInvoice;
+      // !this.isModalOpen;
+    }
   }
-  view: [number, number] = [600, 300]; // Dimensiones del gráfico
+  setupChart() {
+    // data3 = []
+    // this.data = this.products.map((product) => ({
+    this.data3 = this.products.map((product) => ({
+      name: product.make,
+      value: product.stockAmount,
+    }));
+  }
+  view: [number, number] = [380, 150]; // Dimensiones del gráfico
   colorScheme = 'cool'; // Esquema de colores
   data = [
-    { name: 'Riesgo 1', value: 300 },
-    { name: 'Riesgo 2', value: 500 },
-    { name: 'Riesgo 3', value: 531 },
-    { name: 'Riesgo 4', value: 189 },
-    { name: 'Riesgo 5', value: 45 },
+    { name: 'R1', value: 300 },
+    { name: 'R2', value: 500 },
+    { name: 'R3', value: 531 },
+    { name: 'R4', value: 189 },
+    { name: 'R5', value: 45 },
     // ...
   ];
 
   onSelect(event: any) {
     // Acción a realizar cuando se selecciona una porción del gráfico
   }
-  view2: [number, number] = [500, 300]; // Tamaño del gráfico
+  view2: [number, number] = [380, 200]; // Tamaño del gráfico
 
   // Datos para el gráfico
   data2 = [
@@ -51,6 +105,8 @@ export class DashboardComponent implements OnInit {
   showYAxisLabel = true;
   xAxisLabel = 'Meses';
   yAxisLabel = '# Afiliados';
+  xAxisLabel3 = 'Productos';
+  yAxisLabel3 = '# Stock';
 
   // Esquema de colores para las barras
   colorScheme2: Color = {

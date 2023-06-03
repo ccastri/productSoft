@@ -2,3 +2,19 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+
+
+.fade-in-out {
+    transition: opacity 0.3s;
+}
+
+.fade-in-out.ng-enter,
+.fade-in-out.ng-leave {
+    opacity: 0;
+}
+
+.fade-in-out.ng-enter-active,
+.fade-in-out.ng-leave-active {
+    opacity: 1;
+}

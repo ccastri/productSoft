@@ -35,6 +35,7 @@ import { ModalFormComponent } from '../components/modal-form/modal-form.componen
     ProductsComponent,
     PagesComponent,
     ModalFormComponent,
+    BrowserAnimationsModule,
   ],
   imports: [
     CommonModule,

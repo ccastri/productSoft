@@ -20,16 +20,20 @@ import { CartComponent } from './cart/cart.component';
 // import { SearchComponent } from './search/search.component';
 
 const childRoutes: Routes = [
-  { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
+  {
+    path: '',
+    component: DashboardComponent,
+    data: { title: 'Dashboard', animation: 'fade' },
+  },
   {
     path: 'products',
     component: ProductsComponent,
-    data: { title: 'Catalog' },
+    data: { title: 'Catalog', animation: 'fade' },
   },
   {
     path: 'cart',
     component: CartComponent,
-    data: { title: 'Ready to pay' },
+    data: { title: 'Ready to pay', animation: 'fade' },
   },
   // {
   //   path: 'chart1',

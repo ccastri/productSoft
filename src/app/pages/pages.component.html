@@ -1,26 +1,20 @@
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
-<div class="w-full space-x-12 flex">
+<div class="w-full flex">
   <!-- <app-header></app-header> -->
   <div class="w-auto bg-gray-500">
     <app-sidebar></app-sidebar>
   </div>
 
+  <!--Breadcrumbs  -->
+  <!-- <app-breadcrumbs></app-breadcrumbs> -->
+  <!-- Mi sistema de rutas -->
   <div class="w-full">
-    <div class="">
-      <!--Breadcrumbs  -->
-      <!-- <app-breadcrumbs></app-breadcrumbs> -->
-      <!-- Mi sistema de rutas -->
-      <router-outlet></router-outlet>
-
-      <!-- <div class="flex-row">
-        <div class="w-full">
-          <div class="border-2 border-blue-500">
-            <div class="border-2 border-red-200"></div>
-          </div>
-        </div>
-      </div> -->
+    <div class="fade-in-out" [@fadeAnimation]="getRouteAnimation(outlet)">
+      <router-outlet #routerOutlet="outlet"></router-outlet>
+      <!-- <div class="">
+      <router-outlet></router-outlet> -->
     </div>
     <!-- footer -->
     <!-- ============================================================== -->

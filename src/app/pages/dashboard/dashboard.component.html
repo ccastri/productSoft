@@ -1,8 +1,10 @@
-<div class="relative flex w-full">
+<div
+  class="relative ade-in-out bg-slate-200 transition-all translate-x-100 flex w-full"
+>
   <app-loader *ngIf="isLoading"></app-loader>
   <div
     *ngIf="!isLoading"
-    class="h-full w-full border-2 space-y-4 flex flex-col border-black"
+    class="h-full f w-full border-2 space-y-4 flex flex-col border-black"
   >
     <!-- <aside class="border-2 flex h-scren flex-col border-black w-1/4">
     <h2 class="mb-20">Menu</h2>
@@ -13,9 +15,14 @@
     </div>
   </aside> -->
     <!-- <p class="w-">dashboard works!</p> -->
-    <div class="w-1/2 flex border-2 border-black items-start h-1/2">
+    <div
+      class="flex text-slate-200 bg-slate-300 flex-col border-2 border-black items-start h-1/2"
+    >
+      <h2 class="text-xl text-slate-100 font-bold text-center mx-auto">
+        Pie Cake Chart
+      </h2>
       <ngx-charts-pie-chart
-        class="w-[50%]"
+        class="text-slate-100"
         [view]="view"
         [scheme]="colorScheme"
         [results]="data"
@@ -40,6 +47,24 @@
         [showYAxisLabel]="showYAxisLabel"
         [xAxisLabel]="xAxisLabel"
         [yAxisLabel]="yAxisLabel"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+    <div
+      class="w-full bg-slate-300 flex h-1/2 border-2 justify-end items-end border-black pr-6"
+    >
+      <ngx-charts-bar-vertical
+        [view]="view2"
+        [scheme]="colorScheme"
+        [results]="data3"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel3"
+        [yAxisLabel]="yAxisLabel3"
+        (select)="onSelect($event)"
       >
       </ngx-charts-bar-vertical>
     </div>
