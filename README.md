@@ -1,8 +1,7 @@
 # LaptopsInventory
 ## Resumen
-Este demo ha sido creado con la finalidad de presentar una entevista técnica como desarrollador front end. Su proposito principal es evaluar el entendimiento de Angular y su empleo en la solucion de problemáticas comunes en el entorno empresarial.
 
-El cliente requeria una aplicacion sin necesidad de servicios backend propiamente. En busca de ahorro de presupuesto tal vez, la solución fue implementada haciendo uso de firebase para emular la base de datos, los servicios de autenticacion y la actualizacion de informacion en tiempo real
+El cliente requeria una aplicacion sin. La solución fue implementada haciendo uso de firebase para emular la base de datos, los servicios de autenticacion y la actualizacion de informacion en tiempo real
 
 # 1er. Consideracion
 El cliente requeria que su aplicacion tuviera un modulo de autenticación para que los vendedores de su tienda pudieran hacer inicio de sesion. Para el login y registro, los paths de /login y /register muestran los formularios para inicio de sesion y/o registro de nuevos ususarios.
@@ -16,7 +15,7 @@ Se debe tener la opción de añadir nuevos productos a la lista de stock con un 
 En una pantalla de facturación manejada por cart.component.ts, invoice.service.ts y products.service.ts se debe añadir uno o mas productos a la lista de productos a facturar.
 
 Finalmente el sistema ha sido desplegado a traves de firebase hosting y el base_url del app-root se encuentra en https://productsoft-52eb0.web.app/
-Actualmente se está trabajando en un modal de confirmacion para mandar la factura a una nueva coleccion de facturas de ordenes en curso que puedan renderizarse en la pagina del dashboard
+
 
 # Modulos
 Actualmente cuenta con los siguientes modulos:
